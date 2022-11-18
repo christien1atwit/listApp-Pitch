@@ -46,7 +46,7 @@ public class Deck extends Pile
 	public static void main( String[] args )
 		{
         // OPTIONAL for testing and debugging
-
+		   System.out.print( "YES" );
 		}	// end main()
 
 	}	// end class Deck
