@@ -27,15 +27,50 @@ package edu.wit.scds.ds.list.app ;
 /**
  * Representation of a player
  *
- * @author Your Name
+ * @author Your Name // TODO
  *
  * @version 1.0.0 2022-11-15 Initial implementation
+ * @version 1.0.1 2022-11-19 Template implementation
  */
 public class Player
     {
     // TODO implement this
-
-
+    
+    // Data fields
+    private Hand myHand ;
+    private int bet ;
+    
+    // Constructor
+    
+    public Player()
+        {
+        /*
+         * Initializes Hand
+         */
+        // TODO implement this
+        
+        }   // end constructor
+    
+    // API methods
+    
+    public void setBet( int value )
+        {
+        // TODO implement this
+        
+        }   // end 1-arg setBet()
+    
+    public int getBet()
+        {
+        // TODO implement this
+        
+        }   // end getBet()
+    
+    public Hand getHand()
+        {
+        // TODO implement this
+        
+        }   // end getHand()
+    
     /**
      * (optional) test driver
      *

@@ -27,16 +27,68 @@ package edu.wit.scds.ds.list.app;
 /**
  * Representation of a deck of cards
  *
- * @author Your Name
+ * @author Your Name // TODO
  *
  * @version 1.0.0 2022-11-15 Initial implementation
+ * @version 1.0.1 2022-11-19 Template implementation
  *
  */
 public class Deck extends Pile
 	{
 	// TODO implement this
-
-
+	
+	// Constructor
+	
+	public Deck()
+    	{
+    	/*
+    	 *  Initializes and adds all of the cards that will be used in the game.
+    	 *  (See the Enums Suit and Rank).
+    	 */
+    	// TODO implement this
+    	
+    	}  // end no-arg deck()
+	
+	// API methods
+	
+	public void deal( Player[] players )
+    	{
+    	/*
+    	 * Accesses each of the players' hands and 
+    	 * adds a group of random cards from the deck
+    	 * to each hand (distributed equally). 
+    	 * Each player is supposed to get 6 random cards?
+    	 * ( Use thePlayerNameExample.getHand() to access the hand )
+    	 */
+    	// TODO implement this
+    	
+    	}  // end deal()
+	
+	public void deal( Team[] teams )
+        {
+        /*
+         * Accesses each of the teams' players' hands and 
+         * adds a group of random cards from the deck
+         * to each hand (distributed equally). 
+         * Each player is supposed to get 6 random cards?
+         * ( Use thePlayerNameExample.getHand() to access the hand )
+         */
+        // TODO implement this
+        
+        }  // end deal()
+	
+	public void shuffle()
+    	{
+    	/*
+    	 * Shuffles the deck- obviously. The deck shuffles
+    	 * the cards that it currently has. The shuffle can be
+    	 * thorough or it can be as simple as our lab assignment-
+    	 * go ham.
+    	 */
+    	// TODO implement this
+    	
+    	}  // end shuffle
+	
 	/**
      * (optional) test driver
      * 

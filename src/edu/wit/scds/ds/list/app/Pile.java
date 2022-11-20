@@ -34,17 +34,60 @@ import java.util.List ;
  * @author Your Name
  *
  * @version 1.0.0 2022-11-15 Initial implementation
+ * @version 1.0.1 2022-11-19 Template implementation
  */
 public class Pile
     {
-
-    // data fields
-    /** the list of cards - directly accessible by subclasses */
-    protected List<Card> cards ;    // instantiate an ArrayList or LinkedList in the constructor
-
-
+    
     // TODO implement this
-
+    
+    // Data fields
+    /** the list of cards - directly accessible by subclasses */
+    protected List<Card> cards ;   // instantiate an ArrayList or LinkedList in the constructor
+    protected int numberOfCards ;
+    
+    // Constructor
+    
+    public Pile()
+        {
+        // instantiate an ArrayList or LinkedList in the constructor and numberOfCards
+        // TODO implement this
+        
+        }   // end no-arg constructor
+    
+    // API methods
+    
+    public void add( Card newCard )
+        {
+        // increment number of cards as well
+        // TODO implement this
+        
+        }   // end add()
+    
+    public void getCards()
+        {
+        // TODO implement this
+        
+        }   // end getCards()
+    
+    public void getNumberOfCards()
+        {
+        // TODO implement this
+        
+        }   // end getNumberOfCards()
+    
+    public boolean isEmpty()
+        {
+        // TODO implement this
+        
+        }   // end isEmpty()
+    
+    public Card remove( Card aCard )
+        {
+        // decrement number of cards as well
+        // TODO implement this
+        
+        }   // end remove()
 
     /*
      * (non-Javadoc)
