@@ -31,7 +31,8 @@ package edu.wit.scds.ds.list.app;
  *
  * @version 1.0.0 2022-11-15 Initial implementation
  * @version 1.0.1 2022-11-19 Template implementation
- *
+ * @version 1.0.2 2022-11-19 Template implementation 2
+ * 
  */
 public class Deck extends Pile
 	{
@@ -43,26 +44,13 @@ public class Deck extends Pile
     	{
     	/*
     	 *  Initializes and adds all of the cards that will be used in the game.
-    	 *  (See the Enums Suit and Rank).
+    	 *  ( Example of initializing a card: new Card(Suit.SPADES, Rank.ACE ).
     	 */
     	// TODO implement this
     	
     	}  // end no-arg deck()
 	
 	// API methods
-	
-	public void deal( Player[] players )
-    	{
-    	/*
-    	 * Accesses each of the players' hands and 
-    	 * adds a group of random cards from the deck
-    	 * to each hand (distributed equally). 
-    	 * Each player is supposed to get 6 random cards?
-    	 * ( Use thePlayerNameExample.getHand() to access the hand )
-    	 */
-    	// TODO implement this
-    	
-    	}  // end deal()
 	
 	public void deal( Team[] teams )
         {

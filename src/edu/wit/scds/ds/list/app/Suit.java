@@ -54,32 +54,28 @@ package edu.wit.scds.ds.list.app ;
  *     </ul>
  * @version 4.2.0 2022-11-06 add switch for standard vs alternate priority
  *
- * @author Your Name
+ * @author Kai Yee
  *
  * @version 4.3.0 2022-11-15 Modifications for use for our game
+ * @version 4.4.0 2022-11-20 Draft Implementation
  */
 public enum Suit
     {
 
 // @formatter:off
-//  Element         Display Name    Graphic     Color      Priority   Alt Priority
+//  Element         Display Name    Graphic     Color 
     /** Spades suit */
-    SPADES      (   "Spades",       "♠",        "black",    4,        1 ),
+    SPADES      (   "Spades",       "♠",        "black" ),
     /** Diamonds suit */
-    DIAMONDS    (   "Diamonds",     "♦",        "red",      3,        2 ),
+    DIAMONDS    (   "Diamonds",     "♦",        "red" ),
     /** Hearts suit */
-    HEARTS      (   "Hearts",       "♥",        "red",      2,        3 ),
+    HEARTS      (   "Hearts",       "♥",        "red" ),
     /** Clubs suit */
-    CLUBS       (   "Clubs",        "♣",        "black",    1,        4 ),
+    CLUBS       (   "Clubs",        "♣",        "black" ),
     /** no suit - for cards such as Joker */
-    NONE        (   "",             "",         "",         5,        5 )
+    NONE        (   "",             "",         "" )
     ;
 // @formatter:on
-
-
-    // static fields
-    /** when true, evaluations will use {@code altPriority} instead of {@code priority} */
-    private static boolean useAltPriority = false ;
 
     // data fields
     /** 'pretty' name for the suit */
@@ -88,12 +84,7 @@ public enum Suit
     private final String graphic ;
     /** black or red for a standard, 52-card deck */
     private final String color ;
-    /** relative strength of each suite - may be more natural for comparisons */
-    private final int priority ;
-    /** alternative priority ordering - may be more natural for display */
-    private final int altPriority ;
-
-
+    
     /**
      * @param suitDisplayName
      *     more esthetically pleasing for display
@@ -101,22 +92,14 @@ public enum Suit
      *     the 'standard' icon for the suit
      * @param suitColor
      *     the 'standard' color for the suit
-     * @param suitPriority
-     *     relative value/priority of the suit - used by compare()
-     * @param altSuitPriority
-     *     alternate relative value/priority of the suit - used by compare()
      */
     private Suit( final String suitDisplayName,
                   final String suitGraphic,
-                  final String suitColor,
-                  final int suitPriority,
-                  final int altSuitPriority )
+                  final String suitColor )
         {
         this.displayName = suitDisplayName ;
         this.graphic = suitGraphic ;
         this.color = suitColor ;
-        this.priority = suitPriority ;
-        this.altPriority = altSuitPriority ;
 
         }   // end constructor
 
@@ -151,64 +134,6 @@ public enum Suit
         }   // end getColor()
 
 
-    /**
-     * @return the priority
-     */
-    public int getPriority()
-        {
-        return Suit.useAltPriority
-                    ? this.altPriority
-                    : this.priority ;
-
-        }   // end getPriority()
-
-
-    /**
-     * @return the alternate priority
-     */
-    public int getAltPriority()
-        {
-        return this.altPriority ;
-
-        }   // end getAltPriority()
-
-
-    /*
-     * miscellaneous utilities
-     */
-
-
-    /**
-     * retrieve the current setting of {@code useAltPriority}
-     *
-     * @return the current setting of {@code useAltPriority}
-     */
-    public static boolean getUseAltPriority()
-        {
-        return Suit.useAltPriority ;
-
-        }   // getUseAltPriority()
-
-
-    /**
-     * set {@code useAltPriority}
-     *
-     * @param newUseAltPriority
-     *     the new setting
-     *
-     * @return the previous setting of {@code useAltPriority}
-     */
-    public static boolean setUseAltPriority( final boolean newUseAltPriority )
-        {
-        final boolean wasUseAltPriority = Suit.useAltPriority ;
-
-        Suit.useAltPriority = newUseAltPriority ;
-
-        return wasUseAltPriority ;
-
-        }   // setUseAltPriority()
-
-
     /*
      * utility methods
      */
@@ -234,28 +159,24 @@ public enum Suit
     public static void main( final String[] args )
         {
         // display column headers
-        System.out.printf( "%-5s %-8s %-8s %-15s %-15s %-10s %-10s %-10s%n",
+        System.out.printf( "%-5s %-8s %-8s %-15s %-15s %-10s%n",
                            "#",
                            "Suit",
                            "Graphic",
                            "Name",
                            "Display Name",
-                           "Color",
-                           "Priority",
-                           "Alt Priority" ) ;
+                           "Color" ) ;
 
         // display each element of the enumeration
         for ( final Suit aSuit : Suit.values() )
             {
-            System.out.printf( "%-5d %-8s %-8s %-15s %-15s %-10s %-10d %-10d%n",
+            System.out.printf( "%-5d %-8s %-8s %-15s %-15s %-10s%n",
                                aSuit.ordinal(),
                                aSuit,
                                aSuit.graphic,
                                aSuit.name(),
                                aSuit.displayName,
-                               aSuit.color,
-                               aSuit.getPriority(),
-                               aSuit.getAltPriority() ) ;
+                               aSuit.color ) ;
             }	// end for
 
         }	// end main()

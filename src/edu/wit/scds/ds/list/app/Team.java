@@ -9,7 +9,8 @@ import java.util.List ;
  *
  * @version 1.0.0 2022-11-19 Initial implementation
  * @version 1.0.1 2022-11-19 Template implementation
- *
+ * @version 1.0.2 2022-11-19 Template implementation 2
+ * 
  */
 public class Team
     {
@@ -59,6 +60,14 @@ public class Team
         // TODO implement this
         
         }   // end getScore()
+    public void refresh()
+        {   
+        /*
+         * Refreshes every variable except players
+         */
+        // TODO implement this
+        
+        }   // end refresh()
     
     }
    // end class Team

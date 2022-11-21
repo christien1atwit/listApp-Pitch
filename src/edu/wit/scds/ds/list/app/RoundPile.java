@@ -8,6 +8,7 @@ package edu.wit.scds.ds.list.app;
  *
  * @version 1.0.0 2022-11-19 Initial implementation
  * @version 1.0.1 2022-11-19 Template implementation
+ * @version 1.0.2 2022-11-19 Template implementation 2
  *
  */
 public class RoundPile
@@ -52,7 +53,7 @@ public class RoundPile
          *   Compares the card's suit(name) with the suitType:
          *        If they are the same suit(name), set the card's suit's priority to 1.
          *        If they aren't the same suit(name), set the card's suit's priority to 0.
-         *        ( You can access priority through newCard.getSuit().setPriority() )
+         *        ( You can access priority through newCard.setPriority() )
          *   Afterwards, compare the newCard with the highestCard. 
          *   If newCard is better/higher:
          *          set the newCard as the highestCard and
@@ -60,7 +61,7 @@ public class RoundPile
          *  
          * Finally, add the card to the list using the add() from the superclass,
          * then increment the faceCount and tallyPoints accordingly.
-         * TallyPoints of a card can be found through ( newCard.getRank().getPoints() ).
+         * TallyPoints of a card can be found through ( newCard.rank.getPoints() ).
          * 
          */
         

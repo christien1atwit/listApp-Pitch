@@ -32,52 +32,46 @@ package edu.wit.scds.ds.list.app ;
  * @version 1.0.0 2016-03-16 initial version
  * @version 1.1.0 2022-11-06 add switches for standard vs alternate points and order
  *
- * @author Your Name
+ * @author Kai Yee
  *
  * @version 1.2.0 2022-11-15 Modifications for use for our game
+ * @version 1.3.0 2022-11-20 Draft Implementation
  */
 public enum Rank
     {
 
 // @formatter:off
-//  Element     Display Name    Graphic     Points      Alt Points  Order      Alt Order
+//  Element     Display Name    Graphic     Points      Order 
     /** Ace */
-    ACE     (   "Ace",          "A",        1,          11,         1,          14 ),
+    ACE     (   "Ace",          "A",        4,          14 ),
     /** Two */
-    TWO     (   "Duece",        "2",        2,          2,          2,          2 ),
+    TWO     (   "Duece",        "2",        0,          2 ),
     /** Three */
-    THREE   (   "Three",        "3",        3,          3,          3,          3 ),
+    THREE   (   "Three",        "3",        0,          3 ),
     /** Four */
-    FOUR    (   "Four",         "4",        4,          4,          4,          4 ),
+    FOUR    (   "Four",         "4",        0,          4 ),
     /** Five */
-    FIVE    (   "Five",         "5",        5,          5,          5,          5 ),
+    FIVE    (   "Five",         "5",        0,          5 ),
     /** Six */
-    SIX     (   "Six",          "6",        6,          6,          6,          6 ),
+    SIX     (   "Six",          "6",        0,          6 ),
     /** Seven */
-    SEVEN   (   "Seven",        "7",        7,          7,          7,          7 ),
+    SEVEN   (   "Seven",        "7",        0,          7 ),
     /** Eight */
-    EIGHT   (   "Eight",        "8",        8,          8,          8,          8 ),
+    EIGHT   (   "Eight",        "8",        0,          8 ),
     /** Nine */
-    NINE    (   "Nine",         "9",        9,          9,          9,          9 ),
+    NINE    (   "Nine",         "9",        0,          9 ),
     /** Ten */
-    TEN     (   "Ten",          "10",       10,         10,         10,         10 ),
+    TEN     (   "Ten",          "10",       10,         10 ),
     /** Jack */
-    JACK    (   "Jack",         "J",        10,         10,         11,         10 ),
+    JACK    (   "Jack",         "J",        1,         11 ),
     /** Queen */
-    QUEEN   (   "Queen",        "Q",        10,         10,         12,         10 ),
+    QUEEN   (   "Queen",        "Q",        2,         12 ),
     /** King */
-    KING    (   "King",         "K",        10,         10,         13,         10 ),
+    KING    (   "King",         "K",        3,         13 ),
     /** Joker */
-    JOKER   (   "Joker",        "R",        0,          0,          99,         99 )
+    JOKER   (   "Joker",        "R",        0,          0 )
     ;
 // @formatter:on
-
-
-    // static fields
-    /** when true, evaluations will use {@code altPoints} instead of {@code points} */
-    private static boolean useAltPoints = false ;
-    /** when true, evaluations will use {@code altOrder} instead of {@code order} */
-    private static boolean useAltOrder = false ;
 
     // data fields
     /** 'pretty' name for the rank */
@@ -86,12 +80,8 @@ public enum Rank
     private final String graphic ;
     /** points for a card of this rank */
     private final int points ;
-    /** alternate points for a card of this rank */
-    private final int altPoints ;
     /** sort order */
     private final int order ;
-    /** alternate sort order */
-    private final int altOrder ;
 
 
     /*
@@ -106,53 +96,25 @@ public enum Rank
      *     the 'standard' icon
      * @param rankPoints
      *     numeric value for the card
-     * @param rankAltPoints
-     *     alternate value for the card (e.g., Ace can be worth 1 or 11 points)
      * @param rankOrder
      *     numeric order for the card
-     * @param rankAltOrder
-     *     alternate order for the card (e.g., Ace can have the lowest or highest order)
      */
     private Rank( final String rankDisplayName,
                   final String rankGraphic,
                   final int rankPoints,
-                  final int rankAltPoints,
-                  final int rankOrder,
-                  final int rankAltOrder )
+                  final int rankOrder )
         {
-        this.displayName = rankDisplayName ;
+        this.displayName = rankDisplayName ; 
         this.graphic = rankGraphic ;
         this.points = rankPoints ;
-        this.altPoints = rankAltPoints ;
-        this.order = rankOrder ;
-        this.altOrder = rankAltOrder ;
+        this.order = rankOrder ; 
 
-        } // end constructor
+        } // end 4-args constructor
 
 
     /*
      * getters
      */
-
-
-    /**
-     * @return the alternate order
-     */
-    public int getAltOrder()
-        {
-        return this.altOrder ;
-
-        } // end getAltOrder()
-
-
-    /**
-     * @return the alternate point value
-     */
-    public int getAltPoints()
-        {
-        return this.altPoints ;
-
-        } // end getAltPoints()
 
 
     /**
@@ -180,9 +142,7 @@ public enum Rank
      */
     public int getOrder()
         {
-        return Rank.useAltOrder
-                    ? this.altOrder
-                    : this.order ;
+        return this.order ;
 
         } // end getOrder()
 
@@ -192,78 +152,9 @@ public enum Rank
      */
     public int getPoints()
         {
-        return Rank.useAltPoints
-                    ? this.altPoints
-                    : this.points ;
+        return this.points ;
 
         } // end getPoints()
-
-
-    /*
-     * miscellaneous utilities
-     */
-
-
-    /**
-     * retrieve the current setting of {@code useAltPoints}
-     *
-     * @return the current setting of {@code useAltPoints}
-     */
-    public static boolean getUseAltPoints()
-        {
-        return Rank.useAltPoints ;
-
-        }   // getUseAltPoints()
-
-
-    /**
-     * set {@code useAltPoints}
-     *
-     * @param newUseAltPoints
-     *     the new setting
-     *
-     * @return the previous setting of {@code useAltPoints}
-     */
-    public static boolean setUseAltPoints( final boolean newUseAltPoints )
-        {
-        final boolean wasUseAltPoints = Rank.useAltPoints ;
-
-        Rank.useAltPoints = newUseAltPoints ;
-
-        return wasUseAltPoints ;
-
-        }   // setUseAltPoints()
-
-
-    /**
-     * retrieve the current setting of {@code useAltOrder}
-     *
-     * @return the current setting of {@code useAltOrder}
-     */
-    public static boolean getUseAltOrder()
-        {
-        return Rank.useAltOrder ;
-
-        }   // getUseAltOrder()
-
-
-    /**
-     * set {@code useAltOrder}
-     *
-     * @param newUseAltOrder
-     *     the new setting
-     *
-     * @return the previous setting of {@code useAltOrder}
-     */
-    public static boolean setUseAltOrder( final boolean newUseAltOrder )
-        {
-        final boolean wasUseAltOrder = Rank.useAltOrder ;
-
-        Rank.useAltOrder = newUseAltOrder ;
-
-        return wasUseAltOrder ;
-
-        }   // setUseAltOrder()
 
 
     /*
@@ -291,7 +182,7 @@ public enum Rank
     public static void main( final String[] args )
         {
         // display column headers
-        System.out.printf( "%-5s %-8s %-8s %-15s %-15s %-6s   %-10s   %-10s %-15s%n",
+        System.out.printf( "%-5s %-8s %-8s %-15s %-15s %-6s   %-10s%n",
                            "#",
                            "Rank",
                            "Graphic",
@@ -305,16 +196,15 @@ public enum Rank
         // display each element of the enumeration
         for ( final Rank aRank : Rank.values() )
             {
-            System.out.printf( "%-5d %-8s %-8s %-15s %-15s %-6d   %-10d   %-10d %-15d%n",
+            System.out.printf( "%-5d %-8s %-8s %-15s %-15s %-6d   %-10d%n",
                                aRank.ordinal(),
                                aRank,
                                aRank.graphic,
                                aRank.name(),
                                aRank.displayName,
                                aRank.points,
-                               aRank.altPoints,
-                               aRank.order,
-                               aRank.altOrder ) ;
+                               aRank.order ) ;
+
             }	// end for
 
         }	// end main()
