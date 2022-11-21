@@ -35,6 +35,7 @@ import java.util.List ;
  *
  * @version 1.0.0 2022-11-15 Initial implementation
  * @version 1.0.1 2022-11-19 Template implementation
+ * @version 1.0.2 2022-11-20 Template implementation 2
  */
 public class Pile
     {
@@ -64,13 +65,13 @@ public class Pile
         
         }   // end add()
     
-    public void getCards()
+    public Card[] getCards()
         {
         // TODO implement this
         
         }   // end getCards()
     
-    public void getNumberOfCards()
+    public int getNumberOfCards()
         {
         // TODO implement this
         
