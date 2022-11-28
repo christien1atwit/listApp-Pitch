@@ -47,6 +47,16 @@ public class Deck extends Pile
     	 *  ( Example of initializing a card: new Card(Suit.SPADES, Rank.ACE ).
     	 */
     	// TODO implement this
+    	for( Suit aSuit : Suit.values() )
+    	    {
+    	    for( Rank aRank : Rank.values() )
+    	        {
+    	        this.cards.add( new Card( aSuit, aRank ) ) ;
+    	        
+    	        
+    	        }
+    	    
+    	    }
     	
     	}  // end no-arg deck()
 	
@@ -87,6 +97,10 @@ public class Deck extends Pile
 		{
         // OPTIONAL for testing and debugging
 		   System.out.print( "YES" );
+		   
+		   Deck testDeck = new Deck() ;
+		   testDeck.cards.toString() ;
+		   
 		}	// end main()
 
 	}	// end class Deck
