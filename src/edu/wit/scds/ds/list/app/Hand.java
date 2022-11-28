@@ -53,9 +53,10 @@ public class Hand extends Pile
         
         }   // end checkPlayableCards()
     
-    public boolean playCard( Card aCard, RoundPile aRoundPile )
+    public boolean playCard( int index , RoundPile aRoundPile )
         {
         /*
+         * (index of the card to play)
          * If the card is playable, add it to the roundPile.
          * If the card isn't playable return false.
          */
