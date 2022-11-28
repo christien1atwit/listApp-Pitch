@@ -51,7 +51,7 @@ public class Deck extends Pile
     	    {
     	    for( Rank aRank : Rank.values() )
     	        {
-    	        this.cards.add( new Card( aSuit, aRank ) ) ;
+    	        this.add( new Card( aSuit, aRank ) ) ;
     	        
     	        
     	        }

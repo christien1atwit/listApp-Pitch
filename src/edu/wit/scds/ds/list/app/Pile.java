@@ -24,6 +24,7 @@
 
 package edu.wit.scds.ds.list.app ;
 
+import java.util.LinkedList ;
 import java.util.List ;
 
 /**
@@ -53,6 +54,8 @@ public class Pile
         {
         // instantiate an ArrayList or LinkedList in the constructor and numberOfCards
         // TODO implement this
+        this.cards = new LinkedList<>() ;
+        this.numberOfCards = 0 ;
         
         }   // end no-arg constructor
     
@@ -62,6 +65,8 @@ public class Pile
         {
         // increment number of cards as well
         // TODO implement this
+        this.cards.add( newCard ) ;
+        this.numberOfCards++ ;
         
         }   // end add()
     
