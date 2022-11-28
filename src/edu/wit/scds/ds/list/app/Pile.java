@@ -41,6 +41,7 @@ import java.util.List ;
 public class Pile
     {
     
+    private static final String Card = null ;
     // TODO implement this
     
     // Data fields
@@ -70,28 +71,31 @@ public class Pile
         
         }   // end add()
     
-    public Card[] getCards()
-        {
-        // TODO implement this
-        
-        }   // end getCards()
+   
     
     public int getNumberOfCards()
         {
         // TODO implement this
-        
+        return this.numberOfCards;
         }   // end getNumberOfCards()
     
     public boolean isEmpty()
         {
         // TODO implement this
-        
+        return this.numberOfCards==0;
         }   // end isEmpty()
     
-    public Card remove( Card aCard )
+    public Card remove(int cardNum )
         {
         // decrement number of cards as well
-        // TODO implement this
+        if ((cardNum>=0)&&(cardNum<this.numberOfCards))
+            {
+            Card removedCard=this.cards.get( cardNum );
+            this.cards.remove( cardNum );
+            return removedCard;
+            }
+        return null;
+       
         
         }   // end remove()
 
