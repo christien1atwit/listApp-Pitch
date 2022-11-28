@@ -24,7 +24,7 @@
 
 package edu.wit.scds.ds.list.app ;
 
-import java.util.LinkedList ;
+import java.util.ArrayList ;
 import java.util.List ;
 
 /**
@@ -32,68 +32,32 @@ import java.util.List ;
  * <p>
  * the bottom card is at position 0
  *
- * @author Your Name
+ * @author Nathan Christie
  *
  * @version 1.0.0 2022-11-15 Initial implementation
- * @version 1.0.1 2022-11-19 Template implementation
- * @version 1.0.2 2022-11-20 Template implementation 2
  */
 public class Pile
     {
-    
-    // TODO implement this
-    
-    // Data fields
+
+    // data fields
     /** the list of cards - directly accessible by subclasses */
-    protected List<Card> cards ;   // instantiate an ArrayList or LinkedList in the constructor
-    protected int numberOfCards ;
-    
-    // Constructor
-    
-    public Pile()
+    protected List<Card> cards ;    // instantiate an ArrayList or LinkedList in the constructor
+
+
+    // TODO implement this
+    /**
+     * 
+     */
+    public Pile() 
         {
-        // instantiate an ArrayList or LinkedList in the constructor and numberOfCards
-        // TODO implement this
-        this.cards = new LinkedList<>() ;
-        this.numberOfCards = 0 ;
-        
-        }   // end no-arg constructor
+            this.cards=new ArrayList<>();
+        }
     
-    // API methods
-    
-    public void add( Card newCard )
+    public add(Card cardToAdd)
         {
-        // increment number of cards as well
-        // TODO implement this
-        this.cards.add( newCard ) ;
-        this.numberOfCards++ ;
-        
-        }   // end add()
-    
-    public Card[] getCards()
-        {
-        // TODO implement this
-        
-        }   // end getCards()
-    
-    public int getNumberOfCards()
-        {
-        // TODO implement this
-        
-        }   // end getNumberOfCards()
-    
-    public boolean isEmpty()
-        {
-        // TODO implement this
-        
-        }   // end isEmpty()
-    
-    public Card remove( Card aCard )
-        {
-        // decrement number of cards as well
-        // TODO implement this
-        
-        }   // end remove()
+            this.cards.add( cardToAdd );
+        }   
+
 
     /*
      * (non-Javadoc)
