@@ -74,7 +74,7 @@ public class Pile
         {
         // increment number of cards as well
         // TODO implement this
-        this.cards.add( newCard ) ;
+        this.cards.add( 0, newCard) ;//Adds the new card to the 'top' of the pile
         this.numberOfCards++ ;
         
         }   // end add()
@@ -99,10 +99,10 @@ public class Pile
         }   // end isEmpty()
     
     /**
-     * 
+     * Removes the card from a specified index
      * 
      * @param cardNum
-     * @return
+     * @return Card
      */
     public Card remove(int cardNum )
         {
@@ -118,6 +118,27 @@ public class Pile
        
         
         }   // end remove()
+    
+    /**
+     * Removes the first card in the pile (The top card)
+     * Useful for dealing cards from a deck
+     * 
+     * @return Card
+     */
+    public Card remove()
+        {
+        
+        if(!isEmpty())
+            {
+            Card removedCard=this.cards.get( 0 );
+            this.cards.remove( 0 );
+            this.numberOfCards--;
+            return removedCard;
+            }
+        return null;
+       
+        
+        }   // end 0-arg remove()
 
     /*
      * (non-Javadoc)

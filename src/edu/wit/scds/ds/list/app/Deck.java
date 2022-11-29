@@ -24,10 +24,12 @@
 
 package edu.wit.scds.ds.list.app;
 
+import java.util.Collections ;
+
 /**
  * Representation of a deck of cards
  *
- * @author Your Name // TODO
+ * @author Nathan Christie
  *
  * @version 1.0.0 2022-11-15 Initial implementation
  * @version 1.0.1 2022-11-19 Template implementation
@@ -62,6 +64,11 @@ public class Deck extends Pile
 	
 	// API methods
 	
+	/**
+	 * 
+	 * 
+	 * @param teams
+	 */
 	public void deal( Team[] teams )
         {
         /*
@@ -72,9 +79,25 @@ public class Deck extends Pile
          * ( Use thePlayerNameExample.getHand() to access the hand )
          */
         // TODO implement this
+        shuffle();
+        for(Team currentTeam: teams)
+            {
+            for(Player currentPlayer: currentTeam.getPlayers())
+                {
+                for(int i=0;i<6;i++)
+                    {
+                    currentPlayer.getHand().add( remove() );
+                    }
+                }
+            }
+        
         
         }  // end deal()
 	
+	/**
+	 * 
+	 * 
+	 */
 	public void shuffle()
     	{
     	/*
@@ -83,7 +106,7 @@ public class Deck extends Pile
     	 * thorough or it can be as simple as our lab assignment-
     	 * go ham.
     	 */
-    	// TODO implement this
+    	Collections.shuffle( this.cards );
     	
     	}  // end shuffle
 	
