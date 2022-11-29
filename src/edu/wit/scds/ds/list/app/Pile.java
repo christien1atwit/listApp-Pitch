@@ -51,6 +51,9 @@ public class Pile
     
     // Constructor
     
+    /**
+     * 
+     */
     public Pile()
         {
         // instantiate an ArrayList or LinkedList in the constructor and numberOfCards
@@ -60,6 +63,11 @@ public class Pile
         
         }   // end no-arg constructor
     
+    /**
+     * 
+     * 
+     * @param newCard
+     */
     // API methods
     
     public void add( Card newCard )
@@ -73,6 +81,11 @@ public class Pile
     
    
     
+    /**
+     * 
+     * 
+     * @return
+     */
     public int getNumberOfCards()
         {
         // TODO implement this
@@ -85,6 +98,12 @@ public class Pile
         return this.numberOfCards==0;
         }   // end isEmpty()
     
+    /**
+     * 
+     * 
+     * @param cardNum
+     * @return
+     */
     public Card remove(int cardNum )
         {
         // decrement number of cards as well
@@ -92,8 +111,9 @@ public class Pile
             {
             Card removedCard=this.cards.get( cardNum );
             this.cards.remove( cardNum );
+            this.numberOfCards--;
             return removedCard;
-            }
+            }//end if
         return null;
        
         
