@@ -48,6 +48,7 @@ import java.util.Objects ;
  *
  * @version 2.2.0 2022-11-15 Modifications for use for our game
  * @version 2.3.0 2022-11-20 Draft Implementation
+ * @version 2.4.0 2022-11-29 Draft Implementation 2
  */
 public class Card implements Comparable<Card>
     {
@@ -225,7 +226,17 @@ public class Card implements Comparable<Card>
                              this.rank ) ;
 
         }   // end hashCode()
-
+    
+    
+    /** @return if the card is a face card (Jack, Queen, King, Joker)
+     */
+    public boolean isFaceCard()
+        {
+        return this.rank == Rank.JACK ||
+               this.rank == Rank.QUEEN ||
+               this.rank == Rank.KING ||
+               this.rank == Rank.JOKER ;
+        }
 
     /**
      * @param value
