@@ -119,10 +119,14 @@ public class Deck extends Pile
 	public static void main( String[] args )
 		{
         // OPTIONAL for testing and debugging
-		   System.out.print( "YES" );
+		   System.out.println( "YES" );
 		   
 		   Deck testDeck = new Deck() ;
-		   testDeck.cards.toString() ;
+		   for( Card currentCard : testDeck.cards )
+		       {
+		       System.out.println( currentCard.toString() ) ;
+		       
+		       }
 		   
 		}	// end main()
 

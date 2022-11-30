@@ -1,6 +1,8 @@
 
 package edu.wit.scds.ds.list.app;
 
+import java.util.Scanner ;
+
 
 /**
  * 
@@ -71,6 +73,21 @@ public class Pitch
          * Godspeed. 
          */
         // TODO implement this
+        
+        Scanner playerInput = new Scanner(System.in) ;
+        
+        //intialize two teams
+        
+        System.out.printf("%nWelcome to Pitch!%nPlease input player one's name: ") ;
+        // team1.getPlayers()[0].setName( input.Next() ) ;
+        System.out.printf("%nPlease input player two's name: ") ;
+        // team2.getPlayers()[0].setName( input.Next() ) ;
+        System.out.printf("%nPlease input player three's name: ") ;
+        // team1.getPlayers()[1].setName( input.Next() ) ;
+        System.out.printf("%nPlease input player four's name: ") ;
+        // team2.getPlayers()[1].setName( input.Next() ) ;
+        
+        for(
         
         }   // end main()
 

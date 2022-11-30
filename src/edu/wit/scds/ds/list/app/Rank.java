@@ -67,9 +67,7 @@ public enum Rank
     /** Queen */
     QUEEN   (   "Queen",        "Q",        2,         12 ),
     /** King */
-    KING    (   "King",         "K",        3,         13 ),
-    /** Joker */
-    JOKER   (   "Joker",        "R",        0,          0 )
+    KING    (   "King",         "K",        3,         13 )
     ;
 // @formatter:on
 

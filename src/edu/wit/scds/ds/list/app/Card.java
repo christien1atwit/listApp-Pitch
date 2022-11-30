@@ -68,19 +68,6 @@ public class Card implements Comparable<Card>
      */
 
     /**
-     * initialize a card with no suit (e.g., a joker)
-     *
-     * @param theRank
-     *     this card's rank
-     */
-    public Card( final Rank theRank )
-        {
-        this( Suit.NONE, theRank ) ;
-
-        }   // end 1-arg constructor
-
-
-    /**
      * @param theSuit
      *     this card's suit
      * @param theRank
@@ -234,8 +221,7 @@ public class Card implements Comparable<Card>
         {
         return this.rank == Rank.JACK ||
                this.rank == Rank.QUEEN ||
-               this.rank == Rank.KING ||
-               this.rank == Rank.JOKER ;
+               this.rank == Rank.KING ;
         }
 
     /**
@@ -292,21 +278,11 @@ public class Card implements Comparable<Card>
             {
 
             // skip placeholder suit
-            if ( Suit.NONE.equals( suit ) )
-                {
-                continue ;
-
-                }
 
             for ( final Rank rank : ranks )
                 {
 
                 // skip non-playing card(s) - Joker
-                if ( Rank.JOKER.equals( rank ) )
-                    {
-                    continue ;
-
-                    }
 
                 // build a card
                 final Card newCard = new Card( suit, rank ) ;

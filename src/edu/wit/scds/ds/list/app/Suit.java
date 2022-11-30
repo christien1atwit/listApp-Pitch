@@ -71,9 +71,7 @@ public enum Suit
     /** Hearts suit */
     HEARTS      (   "Hearts",       "♥",        "red" ),
     /** Clubs suit */
-    CLUBS       (   "Clubs",        "♣",        "black" ),
-    /** no suit - for cards such as Joker */
-    NONE        (   "",             "",         "" )
+    CLUBS       (   "Clubs",        "♣",        "black" )
     ;
 // @formatter:on
 

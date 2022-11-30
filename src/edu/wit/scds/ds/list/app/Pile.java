@@ -74,7 +74,7 @@ public class Pile
         {
         // increment number of cards as well
         // TODO implement this
-        this.cards.add( 0, newCard) ;//Adds the new card to the 'top' of the pile
+        this.cards.add( 0, newCard ) ; //Adds the new card to the 'top' of the pile
         this.numberOfCards++ ;
         
         }   // end add()
