@@ -118,19 +118,22 @@ public class Team
     /**
      * 
      * 
-     * @param aDeck
-     * deals cards back to a deck 
+     * @param deck
+     * deals each card in each RoundPile back to a deck 
      */
-    /*
-    public void dealBack( Deck aDeck)
-    {
-        for (int i = 0 ; i < 4 ; i++)
+    public void dealBack( Deck deck )
+    {   
+        for (RoundPile roundPile : this.roundPiles )
             {
-            aDeck.add( this.roundPiles.get( i ) ) ;
+            for (int i = 0 ; i < 4 ; i++)
+                {
+                deck.add( roundPile.remove() ) ;
+                
+                }
             }
          
-    }
-    */
+    }   // end dealBack()
+    
     
     }
    // end class Team
