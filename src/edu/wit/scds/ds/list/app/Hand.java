@@ -29,14 +29,14 @@ import java.util.List ;
 /**
  * Representation of a hand of cards
  *
- * @author Your Name
+ * @author William Sten
  *
  * @version 1.0.0 2022-11-15 Initial implementation
  * @version 1.0.1 2022-11-19 Template implementation
  */
 public class Hand extends Pile
     {
-    // TODO implement this
+    // DONE implement this
     //constructors are NOT correct currently 
     private List<Card> playerCards ;   // instantiate an ArrayList or LinkedList in the constructor
     private int numberOfCardsInHand ;
@@ -55,7 +55,7 @@ public class Hand extends Pile
          * If the hand doesn't contain the roundPiles SuitType:
          *   set all cards to playable.
          */
-        // TODO implement this
+        // DONE implement this
         for (int i = 0 ; i < this.numberOfCardsInHand ; i++ )
             {
             this.currentCard = this.playerCards.get( i ) ; 
@@ -77,7 +77,7 @@ public class Hand extends Pile
      * if hand hasSuit, then it will check the card attempting to be played 
      * if card is of suit it will return true 
      * if not it will return false and nothing will be added to round pile 
-     * @return
+     * @return true or fale depending on if a card is playable
      */
     public boolean playCard( int index , RoundPile aRoundPile )  
         {
@@ -86,7 +86,7 @@ public class Hand extends Pile
          * If the card is playable, add it to the roundPile.
          * If the card isn't playable return false.
          */
-        // TODO implement this
+        // DONE implement this
         checkPlayableCards(aRoundPile) ; 
         if (this.hasSuit == true) 
             {
@@ -117,7 +117,7 @@ public class Hand extends Pile
         /*
          * Iterates through cards to see if there's a card with the given suit (name).
          */
-        // TODO implement this
+        // DONE implement this
         //checks if the currentCard has the roundPile suit
             if (this.currentCard.suit == aSuit)
                 {
