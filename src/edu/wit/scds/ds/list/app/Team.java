@@ -5,7 +5,7 @@ import java.util.List ;
 
 /**
  * 
- * @author Your Name // TODO
+ * @author Your Name // William Sten
  *
  * @version 1.0.0 2022-11-19 Initial implementation
  * @version 1.0.1 2022-11-19 Template implementation
@@ -22,14 +22,28 @@ public class Team
     private List<RoundPile> roundPiles ;
     private int score ;
     
+    /**
+     * @param player1
+     * @param player2
+     * adds player1 and player2 to team 
+     */
     // Constructor
-    public Team()
+    public Team(Player player1, Player player2)
         {
         // Initializes the variables, and adds two players to the players array.
         // TODO implement this
+        this.players[0] = player1 ; 
+        this.players[1] = player2 ; 
+        
         
         }   // end 2-args constructor
     
+    /**
+     * 
+     * 
+     * @param aRoundPile
+     * tallys points and returns roundPiles 
+     */
     public void addRoundPile( RoundPile aRoundPile )
         {
         /*
@@ -40,34 +54,76 @@ public class Team
          * Of course, add the RoundPile afterwards.
          */
         // TODO implement this
+        addScore(aRoundPile.getTallyPoints()) ; 
+        this.roundPiles.add( aRoundPile ) ; 
+        
         
         }   // end addRoundPile()
     
+    /**
+     * 
+     * 
+     * @param value
+     * adds value to team score
+     */
     public void addScore( int value )
         {
         // TODO implement this
+        this.score = this.score + value ; 
         
         }   // end addScore()
     
+    /**
+     * 
+     * 
+     * @return players on a team
+     */
     public Player[] getPlayers()
         {
         // TODO implement this
+        return this.players ; 
         
         }   // end getPlayers()
     
+    /**
+     * 
+     * 
+     * @return teams current score
+     */
     public int getScore()
         {
         // TODO implement this
+        return this.score ; 
         
         }   // end getScore()
+    /**
+     * 
+     * refreshes score to 0 
+     */
     public void refresh()
         {   
         /*
          * Refreshes every variable except players
          */
-        // TODO implement this
+        // DONE implement this
+        this.score = 0 ; 
+       
         
         }   // end refresh()
+    /**
+     * 
+     * 
+     * @param aDeck
+     * deals cards back to a deck 
+     */
+    public void dealBack( Deck aDeck)
+    {
+        for (int i = 0 ; i < 4 ; i++)
+            {
+            aDeck.add( this.roundPiles.get( i ) ) ;
+            }
+         
+    }
     
     }
    // end class Team
