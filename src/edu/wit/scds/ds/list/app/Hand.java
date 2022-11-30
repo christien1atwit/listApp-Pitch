@@ -24,6 +24,8 @@
 
 package edu.wit.scds.ds.list.app ;
 
+import java.util.List ;
+
 /**
  * Representation of a hand of cards
  *
@@ -35,7 +37,11 @@ package edu.wit.scds.ds.list.app ;
 public class Hand extends Pile
     {
     // TODO implement this
-    
+    //constructors are NOT correct currently 
+    private List<Card> playerCards ;   // instantiate an ArrayList or LinkedList in the constructor
+    private int numberOfCardsInHand ;
+    private Card currentCard ; 
+    private boolean hasSuit = false ; 
     // API methods
     
     public void checkPlayableCards( RoundPile aRoundPile )
@@ -50,10 +56,30 @@ public class Hand extends Pile
          *   set all cards to playable.
          */
         // TODO implement this
+        for (int i = 0 ; i < this.numberOfCardsInHand ; i++ )
+            {
+            this.currentCard = this.playerCards.get( i ) ; 
+            if (containsSuit(aRoundPile.getSuitType()))
+                {
+                this.hasSuit = true ; 
+                }
+            
+            } // end for 
         
         }   // end checkPlayableCards()
     
-    public boolean playCard( int index , Player distributer, Team distributerTeam, RoundPile aRoundPile )  
+    /**
+     * 
+     * 
+     * @param index
+     * @param aRoundPile
+     * checks if hand has playable cards of suit
+     * if hand hasSuit, then it will check the card attempting to be played 
+     * if card is of suit it will return true 
+     * if not it will return false and nothing will be added to round pile 
+     * @return
+     */
+    public boolean playCard( int index , RoundPile aRoundPile )  
         {
         /*
          * (index of the card to play)
@@ -61,6 +87,26 @@ public class Hand extends Pile
          * If the card isn't playable return false.
          */
         // TODO implement this
+        checkPlayableCards(aRoundPile) ; 
+        if (this.hasSuit == true) 
+            {
+            
+            {
+            this.currentCard = this.playerCards.get( index ) ; 
+            if (containsSuit(aRoundPile.getSuitType()))
+                {
+                //aRoundPile.add( this.currentCard, null ) ; 
+                return true ; 
+                }
+            return false ;
+                } 
+            
+            } // end if
+        
+        //if hand does not have RoundSuit, then you can add any card, therefore 
+        //playCard will always be true 
+        //aRoundPile.add( this.currentCard, null ) ;
+        return true ; 
         
         }   // end playCard()
     
@@ -72,6 +118,13 @@ public class Hand extends Pile
          * Iterates through cards to see if there's a card with the given suit (name).
          */
         // TODO implement this
+        //checks if the currentCard has the roundPile suit
+            if (this.currentCard.suit == aSuit)
+                {
+                return true ; 
+                }
+            
+        return false ; 
         
         }   // end containsSuit()
     
@@ -85,6 +138,6 @@ public class Hand extends Pile
         {
         // OPTIONAL for testing and debugging
 
-        }	// end main()
+        }   // end main()
 
-    }	// end class Hand
+    }   // end class Hand
