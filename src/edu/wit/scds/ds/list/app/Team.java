@@ -34,6 +34,7 @@ public class Team
         // TODO implement this
         this.players[0] = player1 ; 
         this.players[1] = player2 ; 
+        this.score = 0 ; 
         
         
         }   // end 2-args constructor
@@ -53,7 +54,11 @@ public class Team
          * access to that too.
          * Of course, add the RoundPile afterwards.
          */
-        // TODO implement this
+        // DONE implement this
+        //Adds tally points to the total tally points a team has if they won the round
+        //adds the cards from the roundpile to that teams pool of won round piles
+        //Does not need number of face cards, since the points of associated ranks should
+        //be tallied in aRoundPile
         addScore(aRoundPile.getTallyPoints()) ; 
         this.roundPiles.add( aRoundPile ) ; 
         
@@ -68,7 +73,7 @@ public class Team
      */
     public void addScore( int value )
         {
-        // TODO implement this
+        // DONE implement this
         this.score = this.score + value ; 
         
         }   // end addScore()
@@ -80,7 +85,7 @@ public class Team
      */
     public Player[] getPlayers()
         {
-        // TODO implement this
+        // DONE implement this
         return this.players ; 
         
         }   // end getPlayers()
@@ -92,7 +97,7 @@ public class Team
      */
     public int getScore()
         {
-        // TODO implement this
+        // DONE implement this
         return this.score ; 
         
         }   // end getScore()
@@ -116,6 +121,7 @@ public class Team
      * @param aDeck
      * deals cards back to a deck 
      */
+    /*
     public void dealBack( Deck aDeck)
     {
         for (int i = 0 ; i < 4 ; i++)
@@ -124,6 +130,7 @@ public class Team
             }
          
     }
+    */
     
     }
    // end class Team
