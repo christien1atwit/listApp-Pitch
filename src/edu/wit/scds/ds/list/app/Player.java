@@ -35,94 +35,88 @@ package edu.wit.scds.ds.list.app ;
 public class Player
     {
     // DONE implement this
-    
+
     // Data fields
     private Hand myHand ;
     private int bet ;
-    private String playerName ; 
-    
+    private String playerName ;
+
     // Constructor
-    
+
     /**
-     * @param giveHand 
-     * giveHand is the hand the player has been dealt 
-     * 
+     * @param giveHand
+     *     giveHand is the hand the player has been dealt
      */
-    public Player(Hand giveHand)
+    public Player( Hand giveHand )
         {
         /*
          * Initializes Hand
          */
         // DONE implement this
-        this.myHand = giveHand ; 
-        
-        
-        
+        this.myHand = giveHand ;
+
         }   // end constructor
-    
+
+
     /**
-     * 
-     * 
      * @param value
-     * set value of a players bet
+     *     set value of a players bet
      */
     // API methods
-    
+
     public void setBet( int value )
         {
         // DONE implement this
-        this.bet = value ; 
+        this.bet = value ;
+
         }   // end 1-arg setBet()
-    
-    
+
+
     /**
-     * 
-     * 
      * @return this.bet
      */
     public int getBet()
         {
         // DONE implement this
-        return this.bet ; 
-        
+        return this.bet ;
+
         }   // end getBet()
-    
+
+
     /**
-     * 
-     * 
      * @return a players hand
      */
     public Hand getHand()
         {
         // DONE implement this
-        return this.myHand ; 
-        
+        return this.myHand ;
+
         }   // end getHand()
-    
+
+
     /**
-     * 
-     * 
      * @param name
-     * sets players name
+     *     sets players name
      */
     public void setName( String name )
         {
         // DONE implement this
-        this.playerName = name ; 
-        }   
-    
-   
+        this.playerName = name ;
+
+        }
+
+
     /**
-     * 
-     * 
      * @return player name
      */
     public String getName()
         {
         // DONE implement this
-        return this.playerName ; 
-        }   
-    
+        return this.playerName ;
+
+        }
+
+
     /**
      * (optional) test driver
      *
