@@ -53,7 +53,7 @@ public class Player
         /*
          * Initializes Hand
          */
-        // TODO implement this
+        // DONE implement this
         this.myHand = giveHand ; 
         
         

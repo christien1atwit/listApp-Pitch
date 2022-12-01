@@ -21,6 +21,8 @@ public class RoundPile extends Pile
     private int faceCount ;
     /** Highest valued card in the pile */
     private Card highestCard ;
+    /** Lowest valued card in the pile */
+    private Card lowestCard ;
     /** Current owner of the RoundPile */
     private Team owner ;
     /** Official suitType of the RoundPile */
@@ -70,6 +72,7 @@ public class RoundPile extends Pile
             {
             this.creator = distributer ;
             this.highestCard = newCard ;
+            this.lowestCard = newCard ;
             this.owner = distributerTeam ;
             this.suitType = this.highestCard.suit ;
             newCard.setPriority( 1 ) ;
@@ -95,6 +98,13 @@ public class RoundPile extends Pile
             // Sets the new highest card and owner if newCard is higher
             this.highestCard = newCard ;
             this.owner = distributerTeam ;
+
+            }
+        
+        if ( this.lowestCard.compareTo( newCard ) > 0 )
+            {
+            // Sets the new highest card and owner if newCard is higher
+            this.lowestCard = newCard ;
 
             }
 
@@ -129,7 +139,21 @@ public class RoundPile extends Pile
         return this.faceCount ;
 
         }   // end getFaceCount()
+    
+    /** @return Highest Card in RoundPile */
+    public Card getHighestCard()
+        {
+        return this.highestCard ;
 
+        }   // end getHighestCard()
+    
+    /** @return Lowest Card in RoundPile */
+    public Card getLowestCard()
+        {
+        return this.lowestCard ;
+
+        }   // end getHighestCard()
+    
     /** 
      * @return the current owner of the RoundPile according to 
      * the team that distributed the RoundPile's current 
