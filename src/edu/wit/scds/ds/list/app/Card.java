@@ -386,17 +386,6 @@ public class Card extends Entity implements Comparable<Card>
 
 
     /**
-     * @return if the card is a face card (Jack, Queen, King, Joker)
-     */
-    public boolean isFaceCard()
-        {
-        return ( this.rank == Rank.JACK ) || ( this.rank == Rank.QUEEN ) ||
-               ( this.rank == Rank.KING ) ;
-
-        }
-
-
-    /**
      * Compares two cards to see if they match, which may be different from them
      * being {@code equal()}
      * <p>

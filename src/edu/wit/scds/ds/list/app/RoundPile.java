@@ -22,8 +22,6 @@ public class RoundPile extends Pile
     private static Suit trumpSuit ;
     /** Player who started the RoundPile */
     private Player creator ;
-    /** Number of face cards in the list */
-    private int faceCount ;
     /** Highest valued card in the current RoundPile */
     private Card highestCard ;
     /** Highest valued card in the pile of the trump suit */
@@ -45,8 +43,7 @@ public class RoundPile extends Pile
      */
     public RoundPile()
         {
-        // Initializes faceCount and tallyPoints and exists Jack
-        this.faceCount = 0 ;
+        // Initializes tallyPoints and exists Jack
         this.tallyPoints = 0 ;
         this.existsTrumpJack = false ;
         this.highestTrumpCard = null ;
@@ -81,12 +78,6 @@ public class RoundPile extends Pile
         // Adds card to this pile and updates tally points and face counter
         add( newCard ) ;
         this.tallyPoints += newCard.rank.getPoints() ;
-
-        if ( newCard.isFaceCard() )
-            {
-            this.faceCount++ ;
-
-            }
 
         // if newCard is the RoundPile's first card, initialize the other variables
         if ( this.cards.size() == 1 )
@@ -166,14 +157,6 @@ public class RoundPile extends Pile
         return this.creator ;
 
         }   // end getCreator()
-
-
-    /** @return how many cards in RoundPile are face cards */
-    public int getFaceCount()
-        {
-        return this.faceCount ;
-
-        }   // end getFaceCount()
 
 
     /** @return Highest Card in RoundPile */
