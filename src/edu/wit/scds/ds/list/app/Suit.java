@@ -143,7 +143,7 @@ public enum Suit
     @Override
     public String toString()
         {
-        return this.graphic ;
+        return this.displayName ;
 
         }   // end toString()
 

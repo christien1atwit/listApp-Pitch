@@ -1,6 +1,7 @@
 
 package edu.wit.scds.ds.list.app ;
 
+import java.util.ArrayList ;
 import java.util.List ;
 
 /**
@@ -20,10 +21,10 @@ public class Team
     private List<RoundPile> roundPiles ;
     private int tallyPoints ;
     private int score ;
-    private Card highestCard ;
-    private Card lowestCard ;
-    private RoundPile highestRoundPile ;
-    private RoundPile lowestRoundPile ;
+    private Card highestTrumpCard ;
+    private Card lowestTrumpCard ;
+    private boolean hasTrumpJack ;
+
 
     /**
      * @param player1
@@ -36,10 +37,13 @@ public class Team
         {
         // Initializes the variables, and adds two players to the players array.
         // DONE implement this
+        this.players = new Player[2] ;
         this.players[ 0 ] = player1 ;
         this.players[ 1 ] = player2 ;
         this.tallyPoints = 0 ;
         this.score = 0 ;
+        this.roundPiles = new ArrayList<>() ;
+        this.hasTrumpJack = false ;
 
         }   // end 2-args constructor
 
@@ -66,33 +70,46 @@ public class Team
 
         this.tallyPoints += aRoundPile.getTallyPoints() ;
         this.roundPiles.add( aRoundPile ) ;
-        // If this is the first RoundPile:
-        if ( this.roundPiles.size() == 1 )
+        
+        // if RoundPile has the trump Jack, update field
+        if ( aRoundPile.existsTrumpJack() )
             {
-            this.highestCard = aRoundPile.getHighestCard() ;
-            this.lowestCard = aRoundPile.getLowestCard() ;
-            this.highestRoundPile = aRoundPile ;
-            this.lowestRoundPile = aRoundPile ;
+            this.hasTrumpJack = true ;
+            
+            }
+
+        
+        // If the RoundPile doesn't have a card of the same suit as the trump card, skip comparisons
+        if ( aRoundPile.getHighestTrumpCard() == null )
+            {
             return ;
-
+            
             }
-
-        // If this isn't the first RoundPile, compare RoundPile's cards
-        if ( this.highestCard.compareTo( aRoundPile.getHighestCard() ) < 0 )
+        
+        // Initialize highest and lowest Trump cards if the RoundPile has the team's first 
+        if ( this.highestTrumpCard == null )
             {
-            // Sets the new highest card and owner if newCard is higher
-            this.highestCard = aRoundPile.getHighestCard() ;
-            this.highestRoundPile = aRoundPile ;
-
+            this.highestTrumpCard = aRoundPile.getHighestTrumpCard() ;
+            this.lowestTrumpCard = aRoundPile.getLowestTrumpCard() ;
+            
             }
-
-        if ( this.lowestCard.compareTo( aRoundPile.getLowestCard() ) > 0 )
+        // replace card as the new highest card of trumpSuit if true
+        else if ( ( this.highestTrumpCard.compareTo( aRoundPile.getHighestTrumpCard() ) > 0 ) )
             {
             // Sets the new lowest card and owner if newCard is lower
-            this.lowestCard = aRoundPile.getLowestCard() ;
-            this.lowestRoundPile = aRoundPile ;
+            this.highestTrumpCard = aRoundPile.getHighestTrumpCard() ;
 
             }
+        
+        // replace card as the new lowest card of trumpSuit if true
+        if ( ( this.lowestTrumpCard.compareTo( aRoundPile.getLowestTrumpCard() ) > 0 ) )
+            {
+            // Sets the new lowest card and owner if newCard is lower
+            this.lowestTrumpCard = aRoundPile.getLowestTrumpCard() ;
+
+            }
+            
+        
 
         }   // end addRoundPile()
     
@@ -109,7 +126,6 @@ public class Team
      */
     public void addScore( int value )
         {
-        // DONE implement this
         this.score += value ;
 
         }   // end addScore()
@@ -135,45 +151,23 @@ public class Team
 
 
     /**
-     * @return the highest card out of all of the RoundPiles in the current team
+     * @return the highest trump card out of all of the RoundPiles in the current team
      */
-    public Card getHighestCard()
+    public Card getHighestTrumpCard()
         {
-        return this.highestCard ;
+        return this.highestTrumpCard ;
 
-        }   // end HighestCard()
+        }   // end HighestTrumpCard()
 
 
     /**
-     * @return the RoundPile that's responsible for the highest card in the current
-     *     Team
+     * @return the lowest trump card out of all of the RoundPiles in the current team
      */
-    public RoundPile getHighestRoundPile()
+    public Card getLowestTrumpCard()
         {
-        return this.highestRoundPile ;
+        return this.lowestTrumpCard ;
 
-        }   // end HighestRoundPile()
-
-
-    /**
-     * @return the lowest card out of all of the RoundPiles in the current team
-     */
-    public Card getLowestCard()
-        {
-        return this.lowestCard ;
-
-        }   // end LowestCard()
-
-
-    /**
-     * @return the RoundPile that's responsible for the lowest card in the current
-     *     Team
-     */
-    public RoundPile getLowestRoundPile()
-        {
-        return this.lowestRoundPile ;
-
-        }   // end lowestRoundPile()
+        }   // end LowestTrumpCard()
 
 
     /**
@@ -203,7 +197,14 @@ public class Team
         {
         return this.tallyPoints ;
 
-        }
+        }   // end getTallyPoints()
+    
+    /** @return true if the current team has the trump jack */
+    public boolean getHasTrumpJack()
+        {
+        return this.hasTrumpJack ;
+        
+        }   // end getHasTrumpJack()
 
 
     /**
@@ -212,10 +213,12 @@ public class Team
     public void refresh()
         {
         /*
-         * Refreshes every variable except players
+         * Refreshes every variable except players and score
          */
         // DONE implement this
         this.tallyPoints = 0 ;
+        this.roundPiles = new ArrayList<>() ;
+        this.hasTrumpJack = false ;
 
         }   // end refresh()
 
