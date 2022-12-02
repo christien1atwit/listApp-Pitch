@@ -30,7 +30,7 @@ import javax.swing.event.DocumentListener ;
  *
  * @version 1.0.0 2022-11-26 Initial implementation
  */
-public class GUIHandler implements Runnable
+public class DisplayHandler implements Runnable
     {
 
     /*
@@ -73,7 +73,7 @@ public class GUIHandler implements Runnable
     /**
      * Initializes the most of the GUI components
      */
-    public GUIHandler()
+    public DisplayHandler()
         {
         initFrame() ;
         initTitle() ;

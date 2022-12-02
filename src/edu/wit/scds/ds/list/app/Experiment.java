@@ -19,7 +19,7 @@ public class Experiment implements Runnable
     public static void main( String[] args )
         {
         // Creates an entirely new thread to handle constantly updating graphics
-        Thread graphics = new Thread( new GUIHandler() ) ;
+        Thread graphics = new Thread( new DisplayHandler() ) ;
         graphics.start() ; 
         
         test() ;
@@ -61,7 +61,7 @@ public class Experiment implements Runnable
         for ( int i = 0 ; i <= 5 ; i++ )
             {
             Card card = new Card(Suit.values()[i/2], Rank.values()[i] ) ;
-            GUIHandler.add( card ) ;
+            DisplayHandler.add( card ) ;
             hello[ i ] = card ;
             p.getHand().add( card );
 
@@ -70,20 +70,20 @@ public class Experiment implements Runnable
         
         StringBuilder h = new StringBuilder() ;
         //GUIHandler.startTurn( 1, hello, 1 ) ;
-        playerName = GUIHandler.getPlayerName( 1 );
+        playerName = DisplayHandler.getPlayerName( 1 );
         
         for (int i = 0; i < 5 ; i++)
             {
-            GUIHandler.startTurn(playerName);
+            DisplayHandler.startTurn(playerName);
             p.getHand().checkPlayableCards( rp );
             if (makeBet)
                 {
-                bet[0] = GUIHandler.getBet( p, 3 ) ;
+                bet[0] = DisplayHandler.getBet( p, 3 ) ;
                 
                 }
             else
                 {
-                chosenCard[0] = GUIHandler.showPlayerHand( p, rp);
+                chosenCard[0] = DisplayHandler.showPlayerHand( p, rp);
                 
             //System.out.println( bet[ 0 ] );
             //System.out.println( chosenCard[ 0 ] ) ;
@@ -91,7 +91,7 @@ public class Experiment implements Runnable
                 rp.add(p.getHand().remove( chosenCard[0] ), p, new Team(new Player(new Hand()), new Player(new Hand())) ) ;
                 }
             
-            GUIHandler.endTurn() ;
+            DisplayHandler.endTurn() ;
             if (rp.getNumberOfCards() == 4) 
                 {
                 System.out.println(rp.getHighestCard()) ;

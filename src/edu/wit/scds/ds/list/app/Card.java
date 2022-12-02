@@ -205,7 +205,7 @@ public class Card extends Entity implements Comparable<Card>
                     chosenCard[ 0 ] = orderNumber ;
 
                     // Sets card to the top of the GUI table hierarchy
-                    GUIHandler.toTop( this ) ;
+                    DisplayHandler.toTop( this ) ;
 
                     // Removes any buttons on window
                     

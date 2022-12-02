@@ -114,7 +114,9 @@ public class Hand extends Pile
     
     /**
      * Displays all the cards currently in hand
+     * @param chosenCard variable that indicates the index of the card chosen (in array to be modifiable)
      * @param player displaying the hand / Thread object
+     * @param roundPile RoundPile that any one of the cards can be dealt to 
      * @param frame Window to add each card's interactive options
      */
     public void displayHand( int[] chosenCard, Player player, RoundPile roundPile, JFrame frame )
@@ -143,6 +145,10 @@ public class Hand extends Pile
     /**
      * @param index
      *     index of the card to play in this.hand
+     * @param distributer 
+     *     player that distributed the card
+     * @param distributerTeam 
+     *     team that the player belongs to
      * @param aRoundPile
      *     checks if hand has playable cards of suit if hand hasSuit, then it will
      *     check the card attempting to be played if card is of suit it will return
@@ -162,7 +168,7 @@ public class Hand extends Pile
         // DONE implement this
         if ( this.cards.get( index ).getIsPlayable() )
             {
-            aRoundPile.add( cards.get( index ), distributer, distributerTeam ) ;
+            aRoundPile.add( this.cards.get( index ), distributer, distributerTeam ) ;
             return true ;
             } // end if
 
