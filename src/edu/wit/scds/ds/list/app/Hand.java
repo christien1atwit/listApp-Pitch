@@ -83,8 +83,8 @@ public class Hand extends Pile
             // Iterate through cards
             for ( Card card : this.cards )
                 {
-                // If card is the same suit, make it playable
-                if ( roundPileSuit == card.getSuit() )
+                // If card is the same suit with RoundPile or Trump Card, make it playable
+                if ( roundPileSuit == card.getSuit() || RoundPile.getTrumpSuit() == card.getSuit() )
                     {
                     card.setIsPlayable( true ) ;
 

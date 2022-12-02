@@ -53,6 +53,8 @@ public class Experiment implements Runnable
         int[] chosenCard = new int[1] ;
         boolean makeBet = false ;
         RoundPile rp = new RoundPile() ;
+        String playerName ;
+        (new RoundPile()).add( new Card(Suit.DIAMONDS, Rank.EIGHT), p, new Team(new Player(new Hand()), new Player(new Hand())) ) ;
         
         Card[] hello = new Card[ 6 ] ;
 
@@ -64,28 +66,39 @@ public class Experiment implements Runnable
             p.getHand().add( card );
 
             }
-        rp.add( new Card(Suit.HEARTS, Rank.EIGHT), p, new Team(new Player(new Hand()), new Player(new Hand())) ) ;
+        //rp.add( new Card(Suit.HEARTS, Rank.EIGHT), p, new Team(new Player(new Hand()), new Player(new Hand())) ) ;
         
         StringBuilder h = new StringBuilder() ;
         //GUIHandler.startTurn( 1, hello, 1 ) ;
-        String playerName = GUIHandler.getPlayerName( 1 );
-        GUIHandler.startTurn(playerName);
-        p.getHand().checkPlayableCards( rp );
-        GUIHandler.showActions( chosenCard, p, new RoundPile(), bet, makeBet );
-        if (makeBet)
-            {
-            if ( bet[ 0 ] == 0 )
-                {
-                // continue
-                
-                }
-            waitFor( p ) ;
-             
-            }
-        System.out.println( bet[ 0 ] );
-        System.out.println( chosenCard[ 0 ] ) ;
-        GUIHandler.endTurn() ;
+        playerName = GUIHandler.getPlayerName( 1 );
         
+        for (int i = 0; i < 5 ; i++)
+            {
+            GUIHandler.startTurn(playerName);
+            p.getHand().checkPlayableCards( rp );
+            GUIHandler.showActions( chosenCard, p, rp, bet, makeBet );
+            if (makeBet)
+                {
+                if ( bet[ 0 ] == 0 )
+                    {
+                    // continue
+                    
+                    }
+                waitFor( p ) ;
+                 
+                }
+            //System.out.println( bet[ 0 ] );
+            //System.out.println( chosenCard[ 0 ] ) ;
+            rp.add(p.getHand().remove( chosenCard[0] ), p, new Team(new Player(new Hand()), new Player(new Hand())) ) ;
+            GUIHandler.endTurn() ;
+            if (rp.getNumberOfCards() == 4) 
+                {
+                System.out.println(rp.getHighestCard()) ;
+                System.out.println(rp.getHighestTrumpCard()) ;
+                System.out.println(rp.getLowestTrumpCard()) ;
+
+                }
+            }
 
         }
 

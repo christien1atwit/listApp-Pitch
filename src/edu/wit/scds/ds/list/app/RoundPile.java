@@ -223,7 +223,13 @@ public class RoundPile extends Pile
         return this.tallyPoints ;
 
         }   // end getTallyPoints()
+    
+    /** @return Gets the trump suit of all RoundPiles */
+    public static Suit getTrumpSuit()
+        {
+        return trumpSuit ;
 
+        }   // endgetTrumpSuit()
 
     /** Resets the trump suit of all RoundPiles */
     public static void resetTrumpSuit()
