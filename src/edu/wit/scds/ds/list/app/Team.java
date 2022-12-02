@@ -95,7 +95,13 @@ public class Team
             }
 
         }   // end addRoundPile()
+    
+    /** @param value to add to to tally points */
+    public void addTallyPoints( int value )
+        {
+        this.tallyPoints += value ;
 
+        }
 
     /**
      * @param value
