@@ -259,12 +259,12 @@ public class RoundPile extends Pile
         // OPTIONAL for testing and debugging
         RoundPile j = new RoundPile() ;
         j.add( new Card(Suit.HEARTS, Rank.ACE), new Player(new Hand()), new Team(new Player(new Hand()), new Player(new Hand())) ) ;
-        System.out.println( j.trumpSuit ) ;
+        System.out.println( RoundPile.trumpSuit ) ;
         System.out.println( j.getHighestTrumpCard() ) ;
         
         RoundPile k = new RoundPile() ;
         k.add( new Card(Suit.DIAMONDS, Rank.JACK), new Player(new Hand()), new Team(new Player(new Hand()), new Player(new Hand())) ) ;
-        System.out.println( k.trumpSuit ) ;
+        System.out.println( RoundPile.trumpSuit ) ;
         System.out.println( k.getHighestTrumpCard() ) ;
         
         }   // end main()

@@ -41,9 +41,6 @@ import java.util.List ;
 public class Pile
     {
     
-    private static final String Card = null ;
-    // TODO implement this
-    
     // Data fields
     /** the list of cards - directly accessible by subclasses */
     protected List<Card> cards ;   // instantiate an ArrayList or LinkedList in the constructor

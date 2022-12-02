@@ -51,7 +51,7 @@ public class Experiment implements Runnable
         Player p = new Player( new Hand() ) ;
         int[] bet = new int[1] ;
         int[] chosenCard = new int[1] ;
-        boolean makeBet = false ;
+        boolean makeBet = true ;
         RoundPile rp = new RoundPile() ;
         String playerName ;
         (new RoundPile()).add( new Card(Suit.DIAMONDS, Rank.EIGHT), p, new Team(new Player(new Hand()), new Player(new Hand())) ) ;
@@ -75,7 +75,15 @@ public class Experiment implements Runnable
         for (int i = 0; i < 5 ; i++)
             {
             GUIHandler.startTurn(playerName);
-            p.getHand().checkPlayableCards( rp );
+            if (makeBet)
+                {
+                p.getHand().setUnplayable() ;
+                }
+            else
+                {
+                p.getHand().checkPlayableCards( rp );
+                
+                }
             GUIHandler.showActions( chosenCard, p, rp, bet, makeBet );
             if (makeBet)
                 {
@@ -84,12 +92,16 @@ public class Experiment implements Runnable
                     // continue
                     
                     }
-                waitFor( p ) ;
+                //waitFor( p ) ;
                  
                 }
             //System.out.println( bet[ 0 ] );
             //System.out.println( chosenCard[ 0 ] ) ;
+            else
+                {
             rp.add(p.getHand().remove( chosenCard[0] ), p, new Team(new Player(new Hand()), new Player(new Hand())) ) ;
+                }
+            
             GUIHandler.endTurn() ;
             if (rp.getNumberOfCards() == 4) 
                 {

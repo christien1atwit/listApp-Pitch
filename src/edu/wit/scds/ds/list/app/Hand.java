@@ -172,6 +172,16 @@ public class Hand extends Pile
         return false ;
 
         }   // end playCard()
+    
+    /** Sets all of the cards in hand as unplayable */
+    public void setUnplayable() 
+        {
+        for ( Card card : this.cards )
+            {
+            card.setIsPlayable( false );
+            
+            }
+        }   // setUnplayable()
 
     // Private Methods
 
