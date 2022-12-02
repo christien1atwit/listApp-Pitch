@@ -62,7 +62,18 @@ public class Hand extends Pile
          */
         // DONE implement this
 
-        // If hand has any cards that is the same Suit as the roundPile:
+        // If roundPile is empty/doesn't have a suit, set all cards to playable
+        if ( aRoundPile.isEmpty() )
+            {
+            for ( Card card : this.cards )
+                {
+                card.setIsPlayable( true ) ;
+
+                }
+            return ;
+
+            }
+        // If hand has any cards that is the same Suit as the roundPile:    
         Suit roundPileSuit = aRoundPile.getSuitType() ;
         if ( containsSuit( roundPileSuit ) )
             {
