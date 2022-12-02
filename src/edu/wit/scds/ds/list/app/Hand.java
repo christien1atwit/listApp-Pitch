@@ -24,8 +24,6 @@
 
 package edu.wit.scds.ds.list.app ;
 
-import java.util.List ;
-
 /**
  * Representation of a hand of cards
  *
@@ -36,21 +34,22 @@ import java.util.List ;
  */
 public class Hand extends Pile
     {
-
-    // DONE implement this
-    // constructors are NOT correct currently
-    private List<Card> playerCards ;   // instantiate an ArrayList or LinkedList in
-                                       // the constructor
-    private int numberOfCardsInHand ;
-    private Card currentCard ;
-    private boolean hasSuit = false ;
-    // API methods
+    // Constructor
 
     /**
-     * 
-     * 
+     * Initializes pile of cards
+     */
+    public Hand()
+        {
+        super() ;
+
+        }   // end Hand()
+    // API methods
+
+
+    /**
      * @param aRoundPile
-     * Checks to see if a card is of dominant suit in a hand
+     *     Checks to see if a card is of dominant suit in a hand
      */
     public void checkPlayableCards( RoundPile aRoundPile )
         {
@@ -62,23 +61,47 @@ public class Hand extends Pile
          * roundPiles SuitType: set all cards to playable.
          */
         // DONE implement this
-        for ( int i = 0 ; i < this.numberOfCardsInHand ; i++ )
+
+        // If hand has any cards that is the same Suit as the roundPile:
+        Suit roundPileSuit = aRoundPile.getSuitType() ;
+        if ( containsSuit( roundPileSuit ) )
             {
-            this.currentCard = this.playerCards.get( i ) ;
-            if ( containsSuit( aRoundPile.getSuitType() ) )
+            // Iterate through cards
+            for ( Card card : this.cards )
                 {
-                this.hasSuit = true ;
+                // If card is the same suit, make it playable
+                if ( roundPileSuit == card.getSuit() )
+                    {
+                    card.setIsPlayable( true ) ;
+
+                    }
+                else
+                    {
+                    // if it isn't the same suit, make it unplayable
+                    card.setIsPlayable( false ) ;
+
+                    }
 
                 }
 
-            } // end for
+            }
+        else
+            {
+            // If hand doesn't have the suit of the RoundPile make all cards playable
+            for ( Card card : this.cards )
+                {
+                card.setIsPlayable( true ) ;
+
+                }
+
+            }
 
         }   // end checkPlayableCards()
 
 
     /**
      * @param index
-     * index of the card to play in this.hand
+     *     index of the card to play in this.hand
      * @param aRoundPile
      *     checks if hand has playable cards of suit if hand hasSuit, then it will
      *     check the card attempting to be played if card is of suit it will return
@@ -87,6 +110,8 @@ public class Hand extends Pile
      * @return true or fale depending on if a card is playable
      */
     public boolean playCard( int index,
+                             Player distributer,
+                             Team distributerTeam,
                              RoundPile aRoundPile )
         {
         /*
@@ -94,29 +119,16 @@ public class Hand extends Pile
          * roundPile. If the card isn't playable return false.
          */
         // DONE implement this
-        checkPlayableCards( aRoundPile ) ;
-        if ( this.hasSuit )
+        if ( this.cards.get( index ).getIsPlayable() )
             {
-
-                {
-                this.currentCard = this.playerCards.get( index ) ;
-                if ( containsSuit( aRoundPile.getSuitType() ) )
-                    {
-                    // aRoundPile.add( this.currentCard, null ) ;
-                    return true ;
-
-                    }
-
-                return false ;
-
-                }
-
+            aRoundPile.add( cards.get( index ), distributer, distributerTeam ) ;
+            return true ;
             } // end if
 
         // if hand does not have RoundSuit, then you can add any card, therefore
         // playCard will always be true
         // aRoundPile.add( this.currentCard, null ) ;
-        return true ;
+        return false ;
 
         }   // end playCard()
 
@@ -131,9 +143,13 @@ public class Hand extends Pile
          */
         // DONE implement this
         // checks if the currentCard has the roundPile suit
-        if ( this.currentCard.suit == aSuit )
+        for ( Card card : this.cards )
             {
-            return true ;
+            if ( aSuit == card.getSuit() )
+                {
+                return true ;
+
+                }
 
             }
 

@@ -2,6 +2,12 @@
 package edu.wit.scds.ds.list.app ;
 
 /**
+ * RoundPile is a pile tracks the tally points and the face count of
+ * cards in the respective pile. While also having recording
+ * the 'properties' of the first card (who dealt it, etc.), the 
+ * RoundPile also tracks the dealers of the highest/lowest cards in the
+ * RoundPile.
+ * 
  * @author Kai Yee
  *
  * @version 1.0.0 2022-11-19 Initial implementation
@@ -11,8 +17,6 @@ package edu.wit.scds.ds.list.app ;
  */
 public class RoundPile extends Pile
     {
-
-    // TODO implement this
 
     // Data fields
     /** Player who started the RoundPile */
@@ -76,7 +80,7 @@ public class RoundPile extends Pile
             this.owner = distributerTeam ;
             this.suitType = this.highestCard.suit ;
             newCard.setPriority( 1 ) ;
-
+            
             return ;
 
             }
@@ -103,7 +107,7 @@ public class RoundPile extends Pile
         
         if ( this.lowestCard.compareTo( newCard ) > 0 )
             {
-            // Sets the new highest card and owner if newCard is higher
+            // Sets the new lowest card and owner if newCard is lower
             this.lowestCard = newCard ;
 
             }
