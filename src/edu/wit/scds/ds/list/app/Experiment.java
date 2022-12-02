@@ -52,23 +52,25 @@ public class Experiment implements Runnable
         int[] bet = new int[1] ;
         int[] chosenCard = new int[1] ;
         boolean makeBet = false ;
+        RoundPile rp = new RoundPile() ;
         
         Card[] hello = new Card[ 6 ] ;
 
         for ( int i = 0 ; i <= 5 ; i++ )
             {
-            Card card = new Card(Suit.HEARTS, Rank.ACE) ;
+            Card card = new Card(Suit.values()[i/2], Rank.values()[i] ) ;
             GUIHandler.add( card ) ;
             hello[ i ] = card ;
             p.getHand().add( card );
 
             }
+        rp.add( new Card(Suit.HEARTS, Rank.EIGHT), p, new Team(new Player(new Hand()), new Player(new Hand())) ) ;
         
         StringBuilder h = new StringBuilder() ;
         //GUIHandler.startTurn( 1, hello, 1 ) ;
         String playerName = GUIHandler.getPlayerName( 1 );
         GUIHandler.startTurn(playerName);
-        p.getHand().checkPlayableCards( new RoundPile() );
+        p.getHand().checkPlayableCards( rp );
         GUIHandler.showActions( chosenCard, p, new RoundPile(), bet, makeBet );
         if (makeBet)
             {

@@ -181,20 +181,20 @@ public class Card extends Entity implements Comparable<Card>
             }
 
         this.animation.add( result ) ;
-
-        // Gives the illusion that the card can be pressed/clicked/interacted by
-        // creating overlapping button
-        JButton interactiveCard = new JButton() ;
-        interactiveCard.setBounds( this.x, this.y, WIDTH, HEIGHT ) ;
-        interactiveCard.setName( "cardButton" ) ;
-        // Makes button completely invisible
-        interactiveCard.setBackground( new Color( 0, 0, 0, 0 ) ) ;
-        interactiveCard.setBorder( null ) ;
-        interactiveCard.setOpaque( false ) ;
-        interactiveCard.setContentAreaFilled( false ) ;
-        // Adds listener to make button or 'card' interactive if it's playable
         if ( this.isPlayable )
             {
+            // Gives the illusion that the card can be pressed/clicked/interacted by
+            // creating overlapping button
+            JButton interactiveCard = new JButton() ;
+            interactiveCard.setBounds( this.x, this.y, WIDTH, HEIGHT ) ;
+            interactiveCard.setName( "cardButton" ) ;
+            // Makes button completely invisible
+            interactiveCard.setBackground( new Color( 0, 0, 0, 0 ) ) ;
+            interactiveCard.setBorder( null ) ;
+            interactiveCard.setOpaque( false ) ;
+            interactiveCard.setContentAreaFilled( false ) ;
+            // Adds listener to make button or 'card' interactive if it's playable
+            
             interactiveCard.addActionListener( e ->
                 {
 
@@ -208,7 +208,7 @@ public class Card extends Entity implements Comparable<Card>
                     GUIHandler.toTop( this ) ;
 
                     // Removes any buttons on window
-
+                    
                     Component[] frameComponents = frame.getRootPane().getComponents() ;
                     for ( int i = frameComponents.length - 1 ; i >= 0 ; i-- )
                         {
@@ -223,24 +223,27 @@ public class Card extends Entity implements Comparable<Card>
                             frame.getRootPane().remove( currentComponent ) ;
 
                             }
+                                       
+                        }   // end for loop 
+                    
+                    // notify that the player has chose to play a card
+                    synchronized ( player )
+                        {
+                        player.notifyAll() ;
 
-                        // notify that the player has chose to play a card
-                        synchronized ( player )
-                            {
-                            player.notifyAll() ;
+                        }
 
-                            }
-
-                        }   // end for loop */
 
                     }
 
                 } ) ;   // end ActionListener
 
+            // add the interactive feature to the window
+            frame.getRootPane().add( interactiveCard, 12 ) ;
+            
             }
 
-        // add the interactive feature to the window
-        frame.getRootPane().add( interactiveCard, 12 ) ;
+        
 
         }
 
