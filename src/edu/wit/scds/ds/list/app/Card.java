@@ -199,7 +199,6 @@ public class Card extends Entity implements Comparable<Card>
                 {
 
                     {
-                    System.out.println("dsa") ;
                     // Plays card if the button on top of the card is clicked
                     play( roundPile.getNumberOfCards() ) ;
 

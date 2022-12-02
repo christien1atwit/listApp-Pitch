@@ -277,7 +277,73 @@ public class GUIHandler implements Runnable
         mainClock() ;
 
         }   // end run()
+    
+    /** 
+     * @param player 
+     *      Player that's making the bet
+     * @return the bet values for the player
+     */
+    public static int getBet( Player player )
+        {
+        // Initializes the changing/result value
+        int[] bet = new int[ 1 ] ;
+        // Displays Hand
+        player.getHand().setUnplayable() ;
+        player.getHand().displayHand( new int[ 1 ], player, new RoundPile(), frame ) ;
 
+        makeBetGUI[ 0 ].setVisible( true ) ;
+        for ( int i = 1 ; i < 7 ; i++ )
+            {
+            final int bettingValue = i ;
+
+            JButton bettingButton = (JButton) makeBetGUI[ i ] ;
+            bettingButton.setVisible( true ) ;
+            // makes each betting button interactive
+            bettingButton.addActionListener( new ActionListener()
+                {
+
+                @Override
+                public void actionPerformed( ActionEvent e )
+                    {
+                    // Establishes a difference between passing value and betting
+                    if ( bettingValue == 1 )
+                        {
+                        bet[ 0 ] = 0 ;
+
+                        }
+                    else
+                        {
+                        bet[ 0 ] = bettingValue ;
+
+                        }
+
+                    // When bet is complete- hide the GUI
+                    for ( JComponent bettingGUI : makeBetGUI )
+                        {
+                        bettingGUI.setVisible( false ) ;
+
+                        }
+
+                    // removes current action listener
+                    bettingButton.removeActionListener( this ) ;
+
+                    // notify that action has been taken
+                    synchronized ( player )
+                        {
+                        player.notifyAll() ;
+
+                        }
+
+                    }
+
+                } ) ;   // end ActionListener()
+
+            }
+
+        waitFor( player ) ;
+        return bet[ 0 ] ;
+
+        }
 
     /**
      * Displays the hand of the player and multiple betting options.
@@ -293,13 +359,12 @@ public class GUIHandler implements Runnable
      * @param makeBet
      *     uses bet variable and sets up interactive GUI for betting if true
      */
-    public static void showActions( int[] chosenCard,
-                                    Player player,
-                                    RoundPile roundPile,
-                                    int[] bet,
-                                    boolean makeBet )
+    public static int showActions( Player player,
+                                    RoundPile roundPile )
         {
-
+        // Initializes the changing/returning value 
+        int[] chosenCard = new int[1] ;
+        
         // If victory Label was ever displayed at the end of the turn, make it
         // invisible
         if ( victoryLabel.isVisible() )
@@ -310,63 +375,10 @@ public class GUIHandler implements Runnable
 
         // Iterates and displays the cards in hand
         player.getHand().displayHand( chosenCard, player, roundPile, frame ) ;
-
-        // if wanted to make a bet set GUI as visible and interactive
-        if ( makeBet )
-            {
-            makeBetGUI[ 0 ].setVisible( true ) ;
-            for ( int i = 1 ; i < 7 ; i++ )
-                {
-                final int bettingValue = i ;
-
-                JButton bettingButton = (JButton) makeBetGUI[ i ] ;
-                bettingButton.setVisible( true ) ;
-                // makes each betting button interactive
-                bettingButton.addActionListener( new ActionListener()
-                    {
-
-                    @Override
-                    public void actionPerformed( ActionEvent e )
-                        {
-                        // Establishes a difference between passing value and betting
-                        if ( bettingValue == 1 )
-                            {
-                            bet[ 0 ] = 0 ;
-
-                            }
-                        else
-                            {
-                            bet[ 0 ] = bettingValue ;
-
-                            }
-
-                        // When bet is complete- hide the GUI
-                        for ( JComponent bettingGUI : makeBetGUI )
-                            {
-                            bettingGUI.setVisible( false ) ;
-
-                            }
-
-                        // removes current action listener
-                        bettingButton.removeActionListener( this ) ;
-
-                        // notify that action has been taken
-                        synchronized ( player )
-                            {
-                            player.notifyAll() ;
-
-                            }
-
-                        }
-
-                    } ) ;   // end ActionListener()
-
-                }
-
-            }   // end if makeBet
-
+        
         // waits for player to place bet or play card
         waitFor( player ) ;
+        return chosenCard[0] ;
 
         }   // end executeStartTurn()
 
