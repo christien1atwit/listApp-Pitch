@@ -281,9 +281,11 @@ public class GUIHandler implements Runnable
     /** 
      * @param player 
      *      Player that's making the bet
+     * @param minimumBet 
+     *      The minimum bet that the play must place
      * @return the bet values for the player
      */
-    public static int getBet( Player player )
+    public static int getBet( Player player, int minimumBet )
         {
         // Initializes the changing/result value
         int[] bet = new int[ 1 ] ;
@@ -292,52 +294,55 @@ public class GUIHandler implements Runnable
         player.getHand().displayHand( new int[ 1 ], player, new RoundPile(), frame ) ;
 
         makeBetGUI[ 0 ].setVisible( true ) ;
-        for ( int i = 1 ; i < 7 ; i++ )
+        for ( int i = 1 ; i < 6 ; i++ )
             {
             final int bettingValue = i ;
-
-            JButton bettingButton = (JButton) makeBetGUI[ i ] ;
-            bettingButton.setVisible( true ) ;
-            // makes each betting button interactive
-            bettingButton.addActionListener( new ActionListener()
+            // ensures that user can either pass or must bet more than the minimum amount
+            if ( i == 1 || i > minimumBet )
                 {
-
-                @Override
-                public void actionPerformed( ActionEvent e )
+                JButton bettingButton = (JButton) makeBetGUI[ i ] ;
+                bettingButton.setVisible( true ) ;
+                // makes each betting button interactive
+                bettingButton.addActionListener( new ActionListener()
                     {
-                    // Establishes a difference between passing value and betting
-                    if ( bettingValue == 1 )
+    
+                    @Override
+                    public void actionPerformed( ActionEvent e )
                         {
-                        bet[ 0 ] = 0 ;
-
+                        // Establishes a difference between passing value and betting
+                        if ( bettingValue == 1 )
+                            {
+                            bet[ 0 ] = 0 ;
+    
+                            }
+                        else
+                            {
+                            bet[ 0 ] = bettingValue ;
+    
+                            }
+    
+                        // When bet is complete- hide the GUI
+                        for ( JComponent bettingGUI : makeBetGUI )
+                            {
+                            bettingGUI.setVisible( false ) ;
+    
+                            }
+    
+                        // removes current action listener
+                        bettingButton.removeActionListener( this ) ;
+    
+                        // notify that action has been taken
+                        synchronized ( player )
+                            {
+                            player.notifyAll() ;
+    
+                            }
+    
                         }
-                    else
-                        {
-                        bet[ 0 ] = bettingValue ;
-
-                        }
-
-                    // When bet is complete- hide the GUI
-                    for ( JComponent bettingGUI : makeBetGUI )
-                        {
-                        bettingGUI.setVisible( false ) ;
-
-                        }
-
-                    // removes current action listener
-                    bettingButton.removeActionListener( this ) ;
-
-                    // notify that action has been taken
-                    synchronized ( player )
-                        {
-                        player.notifyAll() ;
-
-                        }
-
-                    }
-
-                } ) ;   // end ActionListener()
-
+    
+                    } ) ;   // end ActionListener()
+                }   // end if
+            
             }
 
         waitFor( player ) ;
@@ -348,18 +353,14 @@ public class GUIHandler implements Runnable
     /**
      * Displays the hand of the player and multiple betting options.
      *
-     * @param chosenCard
-     *     The variable that is modified to the card played
      * @param player
      *     The current player that is responsible for making decisions
      * @param roundPile
      *     The current RoundPile at play
-     * @param bet
-     *     The variable that is modified to the value the player wishes to bet
-     * @param makeBet
-     *     uses bet variable and sets up interactive GUI for betting if true
+     * @return 
+     *     Index of the card in player's hand that's chosen by the user
      */
-    public static int showActions( Player player,
+    public static int showPlayerHand( Player player,
                                     RoundPile roundPile )
         {
         // Initializes the changing/returning value 
@@ -567,7 +568,7 @@ public class GUIHandler implements Runnable
 
     private static void initMakeBetGUI()
         {
-        makeBetGUI = new JComponent[ 7 ] ;
+        makeBetGUI = new JComponent[ 6 ] ;
 
         // Initializes the Betting Title/Caption
         JLabel caption = new JLabel( "Make Bet:" ) ;
@@ -581,7 +582,7 @@ public class GUIHandler implements Runnable
         frame.getLayeredPane().add( caption ) ;
 
         // Iterates to create buttons that have various values of betting
-        for ( int i = 1 ; i < 7 ; i++ )
+        for ( int i = 1 ; i < 6 ; i++ )
             {
             JButton bettingButton = new JButton() ;
             if ( i == 1 )
@@ -597,7 +598,7 @@ public class GUIHandler implements Runnable
 
             bettingButton.setFont( new Font( "Calibri", Font.BOLD, 40 ) ) ;
             bettingButton.setForeground( Color.WHITE ) ;
-            bettingButton.setBounds( -85 + ( i * 120 ), 240, 120, 500 ) ;
+            bettingButton.setBounds( -25 + ( i * 120 ), 240, 120, 500 ) ;
             bettingButton.setName( "bet" ) ;
             // Makes button completely invisible
             bettingButton.setBackground( new Color( 200, 200, 200 ) ) ;

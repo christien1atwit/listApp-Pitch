@@ -51,7 +51,7 @@ public class Experiment implements Runnable
         Player p = new Player( new Hand() ) ;
         int[] bet = new int[1] ;
         int[] chosenCard = new int[1] ;
-        boolean makeBet = false ;
+        boolean makeBet = true ;
         RoundPile rp = new RoundPile() ;
         String playerName ;
         (new RoundPile()).add( new Card(Suit.DIAMONDS, Rank.EIGHT), p, new Team(new Player(new Hand()), new Player(new Hand())) ) ;
@@ -78,12 +78,12 @@ public class Experiment implements Runnable
             p.getHand().checkPlayableCards( rp );
             if (makeBet)
                 {
-                bet[0] = GUIHandler.getBet( p ) ;
+                bet[0] = GUIHandler.getBet( p, 3 ) ;
                 
                 }
             else
                 {
-                chosenCard[0] = GUIHandler.showActions( p, rp);
+                chosenCard[0] = GUIHandler.showPlayerHand( p, rp);
                 
             //System.out.println( bet[ 0 ] );
             //System.out.println( chosenCard[ 0 ] ) ;
