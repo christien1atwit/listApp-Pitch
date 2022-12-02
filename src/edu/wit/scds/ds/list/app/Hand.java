@@ -24,6 +24,9 @@
 
 package edu.wit.scds.ds.list.app ;
 
+import javax.swing.JFrame ;
+
+
 /**
  * Representation of a hand of cards
  *
@@ -108,8 +111,35 @@ public class Hand extends Pile
             }
 
         }   // end checkPlayableCards()
+    
+    /**
+     * Displays all the cards currently in hand
+     * @param player displaying the hand / Thread object
+     * @param frame Window to add each card's interactive options
+     */
+    public void displayHand( int[] chosenCard, Player player, RoundPile roundPile, JFrame frame )
+        {
+        for ( int i = 0 ; i < this.cards.size() ; i++ )
+            {
+            this.cards.get( i ).displayCardInHand( i, chosenCard, player, roundPile, frame ) ;
+            
+            }
+        
+        }   // end displayHand()
+    
+    /**
+     * Hides all the cards currently in hand
+     */
+    public void hideHand()
+        {
+        for ( int i = 0 ; i < this.cards.size() ; i++ )
+            {
+            this.cards.get( i ).hideCard() ;
 
-
+            }
+        
+        }   // end hideHand()
+    
     /**
      * @param index
      *     index of the card to play in this.hand
@@ -167,8 +197,7 @@ public class Hand extends Pile
         return false ;
 
         }   // end containsSuit()
-
-
+    
     /**
      * (optional) test driver
      *
