@@ -36,98 +36,112 @@ import java.util.List ;
  */
 public class Hand extends Pile
     {
+
     // DONE implement this
-    //constructors are NOT correct currently 
-    private List<Card> playerCards ;   // instantiate an ArrayList or LinkedList in the constructor
+    // constructors are NOT correct currently
+    private List<Card> playerCards ;   // instantiate an ArrayList or LinkedList in
+                                       // the constructor
     private int numberOfCardsInHand ;
-    private Card currentCard ; 
-    private boolean hasSuit = false ; 
+    private Card currentCard ;
+    private boolean hasSuit = false ;
     // API methods
-    
-    public void checkPlayableCards( RoundPile aRoundPile )
-        {
-        /*
-         * If the hand contains the roundPiles SuitType:
-         *   Checks the SuitType of the roundPile and compares each card with
-         *   the SuitType(name). 
-         *   If the SuitType(name) is equal, set the playable of the card to true-
-         *   If not, set the playable of the card to false.
-         * If the hand doesn't contain the roundPiles SuitType:
-         *   set all cards to playable.
-         */
-        // DONE implement this
-        for (int i = 0 ; i < this.numberOfCardsInHand ; i++ )
-            {
-            this.currentCard = this.playerCards.get( i ) ; 
-            if (containsSuit(aRoundPile.getSuitType()))
-                {
-                this.hasSuit = true ; 
-                }
-            
-            } // end for 
-        
-        }   // end checkPlayableCards()
-    
+
     /**
      * 
      * 
-     * @param index
      * @param aRoundPile
-     * checks if hand has playable cards of suit
-     * if hand hasSuit, then it will check the card attempting to be played 
-     * if card is of suit it will return true 
-     * if not it will return false and nothing will be added to round pile 
-     * @return true or fale depending on if a card is playable
+     * Checks to see if a card is of dominant suit in a hand
      */
-    public boolean playCard( int index , RoundPile aRoundPile )  
+    public void checkPlayableCards( RoundPile aRoundPile )
         {
         /*
-         * (index of the card to play)
-         * If the card is playable, add it to the roundPile.
-         * If the card isn't playable return false.
+         * If the hand contains the roundPiles SuitType: Checks the SuitType of the
+         * roundPile and compares each card with the SuitType(name). If the
+         * SuitType(name) is equal, set the playable of the card to true- If not, set
+         * the playable of the card to false. If the hand doesn't contain the
+         * roundPiles SuitType: set all cards to playable.
          */
         // DONE implement this
-        checkPlayableCards(aRoundPile) ; 
-        if (this.hasSuit == true) 
+        for ( int i = 0 ; i < this.numberOfCardsInHand ; i++ )
             {
-            
-            {
-            this.currentCard = this.playerCards.get( index ) ; 
-            if (containsSuit(aRoundPile.getSuitType()))
+            this.currentCard = this.playerCards.get( i ) ;
+            if ( containsSuit( aRoundPile.getSuitType() ) )
                 {
-                //aRoundPile.add( this.currentCard, null ) ; 
-                return true ; 
+                this.hasSuit = true ;
+
                 }
-            return false ;
-                } 
-            
+
+            } // end for
+
+        }   // end checkPlayableCards()
+
+
+    /**
+     * @param index
+     * index of the card to play in this.hand
+     * @param aRoundPile
+     *     checks if hand has playable cards of suit if hand hasSuit, then it will
+     *     check the card attempting to be played if card is of suit it will return
+     *     true if not it will return false and nothing will be added to round pile
+     *
+     * @return true or fale depending on if a card is playable
+     */
+    public boolean playCard( int index,
+                             RoundPile aRoundPile )
+        {
+        /*
+         * (index of the card to play) If the card is playable, add it to the
+         * roundPile. If the card isn't playable return false.
+         */
+        // DONE implement this
+        checkPlayableCards( aRoundPile ) ;
+        if ( this.hasSuit )
+            {
+
+                {
+                this.currentCard = this.playerCards.get( index ) ;
+                if ( containsSuit( aRoundPile.getSuitType() ) )
+                    {
+                    // aRoundPile.add( this.currentCard, null ) ;
+                    return true ;
+
+                    }
+
+                return false ;
+
+                }
+
             } // end if
-        
-        //if hand does not have RoundSuit, then you can add any card, therefore 
-        //playCard will always be true 
-        //aRoundPile.add( this.currentCard, null ) ;
-        return true ; 
-        
+
+        // if hand does not have RoundSuit, then you can add any card, therefore
+        // playCard will always be true
+        // aRoundPile.add( this.currentCard, null ) ;
+        return true ;
+
         }   // end playCard()
-    
+
     // Private Methods
-    
+
+
     private boolean containsSuit( Suit aSuit )
         {
         /*
-         * Iterates through cards to see if there's a card with the given suit (name).
+         * Iterates through cards to see if there's a card with the given suit
+         * (name).
          */
         // DONE implement this
-        //checks if the currentCard has the roundPile suit
-            if (this.currentCard.suit == aSuit)
-                {
-                return true ; 
-                }
-            
-        return false ; 
-        
+        // checks if the currentCard has the roundPile suit
+        if ( this.currentCard.suit == aSuit )
+            {
+            return true ;
+
+            }
+
+        return false ;
+
         }   // end containsSuit()
-    
+
+
     /**
      * (optional) test driver
      *
