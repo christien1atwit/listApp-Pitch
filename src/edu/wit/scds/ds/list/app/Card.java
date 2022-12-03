@@ -60,6 +60,7 @@ import javax.swing.JFrame ;
  */
 public class Card extends Entity implements Comparable<Card>
     {
+
     // data fields
     private static final String FILE_PATH = "./data/cards/" ;
     /** The final width of the card */
@@ -73,10 +74,10 @@ public class Card extends Entity implements Comparable<Card>
                                                                     WIDTH + 1,
                                                                     HEIGHT + 1 ) ;
     private static final Rectangle TRUMP_CARD = new Rectangle( new Color( 240, 230, 0, 160 ),
-                                                                    0,
-                                                                    0,
-                                                                    WIDTH + 1,
-                                                                    HEIGHT + 1 ) ;
+                                                               0,
+                                                               0,
+                                                               WIDTH + 1,
+                                                               HEIGHT + 1 ) ;
     /** The card's suit */
     private final Suit suit ;
     /** The card's rank within its suit */
@@ -87,9 +88,9 @@ public class Card extends Entity implements Comparable<Card>
     private boolean isPlayable ;
 
     /*
-     * Constructor 
+     * Constructor
      */
-    
+
     /**
      * @param theSuit
      *     this card's suit
@@ -115,10 +116,11 @@ public class Card extends Entity implements Comparable<Card>
         setY( -HEIGHT ) ;
 
         }   // end 2-arg constructor
-    
+
     /*
      * utility methods
      */
+
 
     /*
      * (non-Javadoc)
@@ -200,7 +202,7 @@ public class Card extends Entity implements Comparable<Card>
             interactiveCard.setOpaque( false ) ;
             interactiveCard.setContentAreaFilled( false ) ;
             // Adds listener to make button or 'card' interactive if it's playable
-            
+
             interactiveCard.addActionListener( e ->
                 {
 
@@ -214,7 +216,7 @@ public class Card extends Entity implements Comparable<Card>
                     DisplayHandler.toTop( this ) ;
 
                     // Removes any buttons on window
-                    
+
                     Component[] frameComponents = frame.getRootPane().getComponents() ;
                     for ( int i = frameComponents.length - 1 ; i >= 0 ; i-- )
                         {
@@ -229,9 +231,9 @@ public class Card extends Entity implements Comparable<Card>
                             frame.getRootPane().remove( currentComponent ) ;
 
                             }
-                                       
-                        }   // end for loop 
-                    
+
+                        }   // end for loop
+
                     // notify that the player has chose to play a card
                     synchronized ( player )
                         {
@@ -239,17 +241,14 @@ public class Card extends Entity implements Comparable<Card>
 
                         }
 
-
                     }
 
                 } ) ;   // end ActionListener
 
             // add the interactive feature to the window
             frame.getRootPane().add( interactiveCard, 10 ) ;
-            
-            }
 
-        
+            }
 
         }
 
@@ -292,6 +291,7 @@ public class Card extends Entity implements Comparable<Card>
 
         }   // end getIsPlayable()
 
+
     /**
      * @return the priority
      */
@@ -301,6 +301,7 @@ public class Card extends Entity implements Comparable<Card>
 
         }   // end getPriority()
 
+
     /**
      * @return card's rank
      */
@@ -309,6 +310,7 @@ public class Card extends Entity implements Comparable<Card>
         return this.rank ;
 
         }   // end getRank()
+
 
     /**
      * @return card's suit
@@ -422,15 +424,19 @@ public class Card extends Entity implements Comparable<Card>
         moveTo( 340, 220 + ( stackNumber * 40 ) ) ;
 
         }   // end play()
-    
+
+
     /** Resets the list of animation for this card */
     public void resetAnimation()
         {
         this.animation.clear() ;
-        
+
         }   // end resetAnimation() ;
+
+
     /**
      * Changes display if the card is a playable card
+     *
      * @param value
      *     to set the play-ability of the card
      */
@@ -452,27 +458,33 @@ public class Card extends Entity implements Comparable<Card>
             }
 
         }   // end setIsPlayable()
-    
+
+
     /**
      * Changes display if the card is a trump card
+     *
      * @param value
      *     to set whether the card is a trump card
      */
     public void setTrumpCard( boolean value )
         {
-        // If false, remove the component that indicates that the card is the trump card
+        // If false, remove the component that indicates that the card is the trump
+        // card
         if ( !value && this.components.contains( TRUMP_CARD ) )
             {
             this.remove( TRUMP_CARD ) ;
 
             }
+
         // If true, add the component that indicates that the card is the trump card
         if ( value && !this.components.contains( TRUMP_CARD ) )
             {
             this.add( TRUMP_CARD ) ;
 
             }
+
         }
+
 
     /**
      * @param value
@@ -499,6 +511,7 @@ public class Card extends Entity implements Comparable<Card>
     /*
      * Private utility methods
      */
+
 
     /**
      * Uses/creates many Transform classes to simulate an animation that moves the
