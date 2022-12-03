@@ -38,6 +38,7 @@ import java.util.List ;
  * @version 1.0.1 2022-11-19 Template implementation
  * @version 1.0.2 2022-11-20 Template implementation 2
  */
+
 public class Pile
     {
     
@@ -48,6 +49,7 @@ public class Pile
     /** the list of cards - directly accessible by subclasses */
     protected List<Card> cards ;   // instantiate an ArrayList or LinkedList in the constructor
     protected int numberOfCards ;
+    private static Suit trumpSuit ;
     
     // Constructor
     
@@ -144,6 +146,23 @@ public class Pile
        
         
         }   // end 0-arg remove()
+    
+    /**
+     * Set trump suit to suit
+     * 
+     * @param suit - suit to set
+     */
+    public void setTrumpSuit( Suit suit )
+        {
+        trumpSuit = suit ;
+        
+        }
+    
+    public Suit getTrumpSuit()
+        {
+        return trumpSuit ;
+        
+        }
 
     /*
      * (non-Javadoc)

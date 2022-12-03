@@ -69,14 +69,9 @@ public class RoundPile extends Pile
      */
     public void add( Card newCard,
                      Player distributer,
-                     Team distributerTeam )
+                     Team distributerTeam,
+                     int round )
         {
-        // If there is no Trump suit, make this card's suit be the trump suit
-        if ( trumpSuit == null )
-            {
-            trumpSuit = newCard.getSuit() ;
-            
-            }
 
         // Adds card to this pile and updates tally points and face counter
         add( newCard ) ;
@@ -95,17 +90,22 @@ public class RoundPile extends Pile
             this.highestCard = newCard ;
             this.owner = distributerTeam ;
             this.suitType = newCard.getSuit() ;
+            if ( round == 0 )
+                {
+                this.setTrumpSuit( newCard.getSuit() );
+                
+                }
             
             }
         // Checks if card is the the trump suit's Jack
-        if ( newCard.getSuit() == trumpSuit && newCard.getRank().getGraphic().equals( "J" ) )
+        if ( newCard.getSuit() == this.getTrumpSuit() && newCard.getRank().getGraphic().equals( "J" ) )
             {
             this.existsTrumpJack = true ;
             
             }
         
         // Sets the priorities of the card before comparison
-        if ( trumpSuit == newCard.getSuit() )
+        if ( this.getTrumpSuit() == newCard.getSuit() )
             {
             newCard.setPriority( 2 ) ;
 
@@ -126,8 +126,12 @@ public class RoundPile extends Pile
             {
             // Sets the new highest card and owner if newCard is higher
             this.highestCard = newCard ;
-            this.owner = distributerTeam ;
-
+            if( this.highestTrumpCard == null )
+                {
+                this.owner = distributerTeam ;
+                this.creator = distributer ;  // DENNIS TESTING
+                }
+            
             }
         
         // If card has the same suit as the trumpSuit
@@ -138,6 +142,8 @@ public class RoundPile extends Pile
                 {
                 this.highestTrumpCard = newCard ;
                 this.lowestTrumpCard = newCard ;
+                this.creator = distributer ;
+                this.owner = distributerTeam ;
                 
                 }
             // replace card as the new highest card of trumpSuit if true
@@ -145,6 +151,8 @@ public class RoundPile extends Pile
                 {
                 // Sets the new lowest card and owner if newCard is lower
                 this.highestTrumpCard = newCard ;
+                this.creator = distributer ;
+                this.owner = distributerTeam ;
     
                 }
             
@@ -252,13 +260,13 @@ public class RoundPile extends Pile
         {
         // OPTIONAL for testing and debugging
         RoundPile j = new RoundPile() ;
-        j.add( new Card(Suit.HEARTS, Rank.ACE), new Player(new Hand()), new Team(new Player(new Hand()), new Player(new Hand())) ) ;
-        System.out.println( j.trumpSuit ) ;
+        //j.add( new Card(Suit.HEARTS, Rank.ACE), new Player(new Hand()), new Team(new Player(new Hand()), new Player(new Hand())) ) ;
+        //System.out.println( j.trumpSuit ) ;
         System.out.println( j.getHighestTrumpCard() ) ;
         
         RoundPile k = new RoundPile() ;
-        k.add( new Card(Suit.DIAMONDS, Rank.JACK), new Player(new Hand()), new Team(new Player(new Hand()), new Player(new Hand())) ) ;
-        System.out.println( k.trumpSuit ) ;
+        //k.add( new Card(Suit.DIAMONDS, Rank.JACK), new Player(new Hand()), new Team(new Player(new Hand()), new Player(new Hand())) ) ;
+        //System.out.println( k.trumpSuit ) ;
         System.out.println( k.getHighestTrumpCard() ) ;
         
         }   // end main()

@@ -51,7 +51,7 @@ public class Hand extends Pile
      * @param aRoundPile
      *     Checks to see if a card is of dominant suit in a hand
      */
-    public void checkPlayableCards( RoundPile aRoundPile )
+    public void checkPlayableCards( RoundPile aRoundPile)
         {
         /*
          * If the hand contains the roundPiles SuitType: Checks the SuitType of the
@@ -86,6 +86,10 @@ public class Hand extends Pile
                     card.setIsPlayable( true ) ;
 
                     }
+                else if ( card.getSuit() == this.getTrumpSuit() )
+                    {
+                    card.setIsPlayable( true ) ;
+                    }
                 else
                     {
                     // if it isn't the same suit, make it unplayable
@@ -118,12 +122,13 @@ public class Hand extends Pile
      *     check the card attempting to be played if card is of suit it will return
      *     true if not it will return false and nothing will be added to round pile
      *
-     * @return true or fale depending on if a card is playable
+     * @return true or false depending on if a card is playable
      */
     public boolean playCard( int index,
                              Player distributer,
                              Team distributerTeam,
-                             RoundPile aRoundPile )
+                             RoundPile aRoundPile, 
+                             int round )
         {
         /*
          * (index of the card to play) If the card is playable, add it to the
@@ -132,7 +137,9 @@ public class Hand extends Pile
         // DONE implement this
         if ( this.cards.get( index ).getIsPlayable() )
             {
-            aRoundPile.add( cards.get( index ), distributer, distributerTeam ) ;
+            aRoundPile.add( this.cards.get( index ), distributer, distributerTeam, round ) ;
+            this.cards.remove( index ) ;
+            this.numberOfCards-- ;
             return true ;
             } // end if
 

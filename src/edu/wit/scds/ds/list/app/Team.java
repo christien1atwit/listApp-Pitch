@@ -69,7 +69,7 @@ public class Team
         // be tallied in aRoundPile
 
         this.tallyPoints += aRoundPile.getTallyPoints() ;
-        this.roundPiles.add( aRoundPile ) ;
+        this.roundPiles.add( aRoundPile ) ; 
         
         // if RoundPile has the trump Jack, update field
         if ( aRoundPile.existsTrumpJack() )
