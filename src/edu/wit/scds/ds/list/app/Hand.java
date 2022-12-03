@@ -86,7 +86,7 @@ public class Hand extends Pile
                     card.setIsPlayable( true ) ;
 
                     }
-                else if ( card.getSuit() == this.getTrumpSuit() )
+                else if ( card.getSuit() == Pile.getTrumpSuit() )
                     {
                     card.setIsPlayable( true ) ;
                     }
@@ -117,10 +117,16 @@ public class Hand extends Pile
     /**
      * @param index
      *     index of the card to play in this.hand
+     * @param distributer 
+     *     player playing card
+     * @param distributerTeam 
+     *     team player belongs to
      * @param aRoundPile
      *     checks if hand has playable cards of suit if hand hasSuit, then it will
      *     check the card attempting to be played if card is of suit it will return
      *     true if not it will return false and nothing will be added to round pile
+     * @param round 
+     *     round of set (0-5)
      *
      * @return true or false depending on if a card is playable
      */

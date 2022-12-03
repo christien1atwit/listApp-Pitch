@@ -94,7 +94,7 @@ public class Team
             
             }
         // replace card as the new highest card of trumpSuit if true
-        else if ( ( this.highestTrumpCard.compareTo( aRoundPile.getHighestTrumpCard() ) > 0 ) )
+        else if ( this.highestTrumpCard.getRank().getOrder() < aRoundPile.getHighestTrumpCard().getRank().getOrder() )
             {
             // Sets the new lowest card and owner if newCard is lower
             this.highestTrumpCard = aRoundPile.getHighestTrumpCard() ;
@@ -102,7 +102,7 @@ public class Team
             }
         
         // replace card as the new lowest card of trumpSuit if true
-        if ( ( this.lowestTrumpCard.compareTo( aRoundPile.getLowestTrumpCard() ) > 0 ) )
+        if ( this.lowestTrumpCard.getRank().getOrder() > aRoundPile.getLowestTrumpCard().getRank().getOrder() )
             {
             // Sets the new lowest card and owner if newCard is lower
             this.lowestTrumpCard = aRoundPile.getLowestTrumpCard() ;
@@ -149,7 +149,17 @@ public class Team
 
         }   // end dealBack()
 
-
+    /**
+     * 
+     * @return
+     *      Round pile array list
+     */
+    public List<RoundPile> getRoundPiles()
+        {
+        return this.roundPiles ;
+        
+        }
+    
     /**
      * @return the highest trump card out of all of the RoundPiles in the current team
      */

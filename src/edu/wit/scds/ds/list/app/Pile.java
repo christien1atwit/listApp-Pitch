@@ -32,7 +32,7 @@ import java.util.List ;
  * <p>
  * the bottom card is at position 0
  *
- * @author Your Name
+ * @author Nathan Christie
  *
  * @version 1.0.0 2022-11-15 Initial implementation
  * @version 1.0.1 2022-11-19 Template implementation
@@ -42,12 +42,10 @@ import java.util.List ;
 public class Pile
     {
     
-    private static final String Card = null ;
-    // TODO implement this
-    
     // Data fields
     /** the list of cards - directly accessible by subclasses */
     protected List<Card> cards ;   // instantiate an ArrayList or LinkedList in the constructor
+    /** Number of cards in List<Card> cards */
     protected int numberOfCards ;
     private static Suit trumpSuit ;
     
@@ -59,7 +57,7 @@ public class Pile
     public Pile()
         {
         // instantiate an ArrayList or LinkedList in the constructor and numberOfCards
-        // TODO implement this
+        // DONE implement this
         this.cards = new LinkedList<>() ;
         this.numberOfCards = 0 ;
         
@@ -67,15 +65,15 @@ public class Pile
     
     /**
      * 
-     * 
      * @param newCard
+     *      card to be added to List<Card> cards
      */
     // API methods
     
     public void add( Card newCard )
         {
         // increment number of cards as well
-        // TODO implement this
+        // DONE implement this
         this.cards.add( 0, newCard ) ; //Adds the new card to the 'top' of the pile
         this.numberOfCards++ ;
         
@@ -87,10 +85,11 @@ public class Pile
      * 
      * 
      * @return
+     *      number of cards in List<Card> cards
      */
     public int getNumberOfCards()
         {
-        // TODO implement this
+        // DONE implement this
         return this.numberOfCards;
         }   // end getNumberOfCards()
     
@@ -98,18 +97,21 @@ public class Pile
      * 
      * 
      * @return
+     *      true is numberOfCards equals 0
      */
     public boolean isEmpty()
         {
-        // TODO implement this
-        return this.numberOfCards==0;
+        // DONE implement this
+        return this.numberOfCards == 0 ;
         }   // end isEmpty()
     
     /**
      * Removes the card from a specified index
      * 
      * @param cardNum
+     *      index of card to remove
      * @return Card
+     *      card removed
      */
     public Card remove(int cardNum )
         {
@@ -152,13 +154,18 @@ public class Pile
      * 
      * @param suit - suit to set
      */
-    public void setTrumpSuit( Suit suit )
+    public static void setTrumpSuit( Suit suit )
         {
         trumpSuit = suit ;
         
         }
     
-    public Suit getTrumpSuit()
+    /**
+     * 
+     * @return
+     *      trump suit for set
+     */
+    public static Suit getTrumpSuit()
         {
         return trumpSuit ;
         

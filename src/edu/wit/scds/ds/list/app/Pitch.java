@@ -123,7 +123,7 @@ public class Pitch
             setReset( deck ) ;
             
             }
-        System.out.printf("%nCongratulations %s and %s! You won!", winner.getPlayers()[0], winner.getPlayers()[1] ) ;
+        System.out.printf("%nCongratulations %s and %s! You won!", winner.getPlayers()[0].getName(), winner.getPlayers()[1].getName() ) ;
         
         }   // end main()
     
@@ -135,7 +135,6 @@ public class Pitch
                 startRound( i ) ;
                 
                 }
-            teams[0].toString() ;
             return giveScore() ;
             
             }
@@ -173,7 +172,7 @@ public class Pitch
                     {
                 System.out.printf( "%nRound Pile: %s Trump Suit: %s" + "%nHand: %s" +
                                    "%n%s, its your turn. What card would you like to play? (# from left in hand): ", 
-                                       currentRoundPile.toString(), currentRoundPile.getTrumpSuit().toString(),
+                                       currentRoundPile.toString(), Pile.getTrumpSuit().toString(),
                                        currentPlayer.getHand().toString(), currentPlayer.getName() ) ;
                     }
                 else 
@@ -206,7 +205,7 @@ public class Pitch
                             }
                         else
                             {
-                            System.out.printf( "%nNot withnin bounds of hand size. Please input a new card number: " ) ;
+                            System.out.printf( "%nNot withnin bounds of hand size. Please input a new card number or Skip: " ) ;
                             }
                         
                         }
@@ -222,6 +221,7 @@ public class Pitch
                 }
             currentRoundPile.getOwner().addRoundPile( currentRoundPile ) ;
             currentPlayer = currentRoundPile.getCreator() ;
+            System.out.printf( "%nRound Winner: %s%n", currentPlayer.getName() ) ;
             
             }   
         
@@ -292,53 +292,90 @@ public class Pitch
             {
             int scoreTeam1 = 0 ;
             int scoreTeam2 = 0 ;
-            int temp = teams[0].getHighestTrumpCard().getRank().getOrder() - teams[1].getHighestTrumpCard().getRank().getOrder() ;
-            if( temp > 1 ) 
+            
+            if ( teams[0].getHighestTrumpCard() != null && teams[1].getHighestTrumpCard() != null )
                 {
-                scoreTeam1++ ;
                 
-                }
-            else
-                {
-                scoreTeam2++ ;
-                
-                }
-            temp = teams[0].getLowestTrumpCard().getRank().getOrder() - teams[1].getLowestTrumpCard().getRank().getOrder() ;
-            if( temp < 1 ) 
-                {
-                scoreTeam1++ ;
-                
-                }
-            else
-                {
-                scoreTeam2++ ;
-                
-                }
-            if( teams[0].getHasTrumpJack() || teams[1].getHasTrumpJack() )
-                {
-                if( teams[0].getHasTrumpJack() )
+                int temp = teams[0].getHighestTrumpCard().getRank().getOrder() - teams[1].getHighestTrumpCard().getRank().getOrder() ;
+                if( temp > 0) 
                     {
                     scoreTeam1++ ;
-                    
+                
                     }
                 else
                     {
                     scoreTeam2++ ;
+                
+                    }
+                temp = teams[0].getLowestTrumpCard().getRank().getOrder() - teams[1].getLowestTrumpCard().getRank().getOrder() ;
+                if( temp < 0 ) 
+                    {
+                    scoreTeam1++ ;
+                
+                    }
+                else
+                    {
+                    scoreTeam2++ ;
+                
+                    }
+                if( teams[0].getHasTrumpJack() || teams[1].getHasTrumpJack() )
+                    {
+                    if( teams[0].getHasTrumpJack() )
+                        {
+                        scoreTeam1++ ;
+                    
+                        }
+                    else
+                        {
+                        scoreTeam2++ ;
+                    
+                        }
+                
+                    }
+            
+                }
+            else if (teams[0].getHighestTrumpCard() == null )
+                {
+                if ( teams[1].getHasTrumpJack() )
+                    {
+                    scoreTeam2 += 3 ;
+                    
+                    }
+                else
+                    {
+                    scoreTeam2 += 2 ;
                     
                     }
                 
                 }
-            temp = teams[0].getTallyPoints() - teams[1].getTallyPoints() ;
-            if( temp > 1 )
+            else
+                {
+                if ( teams[0].getHasTrumpJack() )
+                    {
+                    scoreTeam1 += 3 ;
+                    
+                    }
+                else
+                    {
+                    scoreTeam1 += 2 ;
+                    
+                    }
+                
+                }
+            
+            int tallyCompare = teams[0].getTallyPoints() - teams[1].getTallyPoints() ;
+            if( tallyCompare > 1 )
                 {
                 scoreTeam1++ ;
                 
                 }
-            else if( temp < 1 )
+            else if( tallyCompare < 1 )
                 {
                 scoreTeam2++ ;
                 
                 }
+            
+            System.out.printf( "%nScoreTeam1: %d, ScoreTeam2: %d%n", scoreTeam1, scoreTeam2 ) ;
             
             if( betTeam == teams[0] && scoreTeam1 >= bet )
                 {
@@ -352,17 +389,21 @@ public class Pitch
                 else if( teams[0].getScore() >= 13 )
                     {
                     winner = teams[0] ;
+                    return true ;
                                                     
                     }
-                else
+                else if( teams[1].getScore() >= 13 )
                     {
                     winner = teams[1] ;
+                    return true ;
                     
                     }
                 
                 }
-            else if( betTeam == teams[0] && scoreTeam2 >= bet )
+            else if( betTeam == teams[1] && scoreTeam2 >= bet )
                 {
+                teams[0].addScore( scoreTeam1 ) ;
+                teams[1].addScore( scoreTeam2 ) ;
                 if( teams[0].getScore() == teams[1].getScore() )
                     {
                     return false ;
@@ -371,13 +412,25 @@ public class Pitch
                 else if( teams[0].getScore() >= 13 )
                     {
                     winner = teams[0] ;
+                    return true ;
                                                     
                     }
-                else
+                else if (teams[1].getScore() >= 13 )
                     {
                     winner = teams[1] ;
+                    return true ;
                     
                     }
+                
+                }
+            else if( betTeam == teams[0] )
+                {
+                teams[1].addScore( scoreTeam2 ) ;
+                
+                }
+            else if( betTeam == teams[1] )
+                {
+                teams[0].addScore( scoreTeam1 ) ;
                 
                 }
             
@@ -390,14 +443,20 @@ public class Pitch
             teams[0].dealBack( deck ) ;
             teams[1].dealBack( deck ) ;
             
+            int scoreTeam1 = teams[0].getScore() ;
+            int scoreTeam2 = teams[1].getScore() ;
+            
             teams[0] = new Team( teams[0].getPlayers()[0], teams[0].getPlayers()[1] ) ;
             teams[1] = new Team( teams[1].getPlayers()[0], teams[1].getPlayers()[1] ) ;
+            
+            teams[0].addScore( scoreTeam1 ) ;
+            teams[1].addScore( scoreTeam2 ) ;
             
             teams[0].getPlayers()[0].setBet( 0 ) ;
             teams[0].getPlayers()[1].setBet( 0 ) ;
             teams[1].getPlayers()[0].setBet( 0 ) ;
             teams[1].getPlayers()[1].setBet( 0 ) ;
-            bet = 0 ;
+            bet = 1 ;
             
             currentPlayer = startingPlayer ;
             nextPlayer() ;

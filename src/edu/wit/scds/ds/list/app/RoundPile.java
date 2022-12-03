@@ -17,9 +17,6 @@ package edu.wit.scds.ds.list.app ;
 public class RoundPile extends Pile
     {
 
-    // Data fields
-    /** Suit that trumps all the other suits */
-    private static Suit trumpSuit ;
     /** Player who started the RoundPile */
     private Player creator ;
     /** Number of face cards in the list */
@@ -66,6 +63,8 @@ public class RoundPile extends Pile
      *     the player that's playing the card
      * @param distributerTeam
      *     the team that the player belongs to
+     * @param round 
+     *     round of set (0-5)
      */
     public void add( Card newCard,
                      Player distributer,
@@ -92,20 +91,20 @@ public class RoundPile extends Pile
             this.suitType = newCard.getSuit() ;
             if ( round == 0 )
                 {
-                this.setTrumpSuit( newCard.getSuit() );
+                Pile.setTrumpSuit( newCard.getSuit() );
                 
                 }
             
             }
         // Checks if card is the the trump suit's Jack
-        if ( newCard.getSuit() == this.getTrumpSuit() && newCard.getRank().getGraphic().equals( "J" ) )
+        if ( newCard.getSuit() == Pile.getTrumpSuit() && newCard.getRank().getOrder() == 11 )
             {
             this.existsTrumpJack = true ;
             
             }
         
         // Sets the priorities of the card before comparison
-        if ( this.getTrumpSuit() == newCard.getSuit() )
+        if ( Pile.getTrumpSuit() == newCard.getSuit() )
             {
             newCard.setPriority( 2 ) ;
 
@@ -122,14 +121,14 @@ public class RoundPile extends Pile
             }
 
         // compare the card with the highest one in current RoundPile
-        if ( this.highestCard.compareTo( newCard ) < 0 )
+        if ( this.highestCard.getRank().getOrder() < newCard.getRank().getOrder() )
             {
             // Sets the new highest card and owner if newCard is higher
             this.highestCard = newCard ;
             if( this.highestTrumpCard == null )
                 {
                 this.owner = distributerTeam ;
-                this.creator = distributer ;  // DENNIS TESTING
+                this.creator = distributer ;
                 }
             
             }
@@ -147,7 +146,7 @@ public class RoundPile extends Pile
                 
                 }
             // replace card as the new highest card of trumpSuit if true
-            else if ( ( this.highestTrumpCard.compareTo( newCard ) < 0 ) )
+            else if ( this.highestTrumpCard.getRank().getOrder() < newCard.getRank().getOrder() )
                 {
                 // Sets the new lowest card and owner if newCard is lower
                 this.highestTrumpCard = newCard ;
@@ -157,7 +156,7 @@ public class RoundPile extends Pile
                 }
             
             // replace card as the new lowest card of trumpSuit if true
-            else if ( ( this.lowestTrumpCard.compareTo( newCard ) > 0 ) )
+            else if ( this.lowestTrumpCard.getRank().getOrder() > newCard.getRank().getOrder() )
                 {
                 // Sets the new lowest card and owner if newCard is lower
                 this.lowestTrumpCard = newCard ;
@@ -236,7 +235,6 @@ public class RoundPile extends Pile
     /** Resets the trump suit of all RoundPiles */
     public static void resetTrumpSuit()
         {
-        trumpSuit = null ;
 
         }   // end resetTrumpSuit()
 
