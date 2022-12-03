@@ -239,7 +239,7 @@ public class Card extends Entity implements Comparable<Card>
                 } ) ;   // end ActionListener
 
             // add the interactive feature to the window
-            frame.getRootPane().add( interactiveCard, 12 ) ;
+            frame.getRootPane().add( interactiveCard, 10 ) ;
             
             }
 

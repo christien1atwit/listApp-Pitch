@@ -165,9 +165,11 @@ public class DisplayHandler implements Runnable
     public static String getPlayerName( int playerNumber )
         {
         StringBuilder playerName = new StringBuilder() ;
-        // Sets up the GUI visibility
+        // Temporarily sets currentPlayer as their id
         ( (JLabel) playerSetup[ 0 ] ).setText( "Player " + playerNumber + ":" ) ;
+        // Shows a black screen to use as a temporary background
         blackScreen.setVisible( true ) ;
+        // Shows GUI for getting player name
         for ( JComponent component : playerSetup )
             {
             component.setVisible( true ) ;
@@ -196,16 +198,13 @@ public class DisplayHandler implements Runnable
 
                         }
 
-                    // Hides the GUI since update completed
+                    // Hides the GUI since update is completed
                     for ( JComponent component : playerSetup )
                         {
                         component.setVisible( false ) ;
 
                         }
 
-                    blackScreen.setVisible( true ) ;
-
-                    // removes current action listener
                     textPane.getDocument().removeDocumentListener( this ) ;
 
                     }
@@ -216,7 +215,7 @@ public class DisplayHandler implements Runnable
             @Override
             public void removeUpdate( DocumentEvent ignoredE )
                 {
-                // Empty Block
+                // Empty Block (not needed)
 
                 }
 
@@ -224,13 +223,13 @@ public class DisplayHandler implements Runnable
             @Override
             public void changedUpdate( DocumentEvent ignoredE )
                 {
-                // Empty Block
+                // Empty Block (not needed)
 
                 }
 
             } ) ;   // end ActionListener()
 
-        // waits for user to type in their name and hit enter
+        // waits for user to type in their name and return
         waitFor( playerName ) ;
 
         return playerName.toString() ;
@@ -293,6 +292,7 @@ public class DisplayHandler implements Runnable
         player.getHand().setUnplayable() ;
         player.getHand().displayHand( new int[ 1 ], player, new RoundPile(), frame ) ;
 
+        // Iterates through to show all of the necessary betting options
         makeBetGUI[ 0 ].setVisible( true ) ;
         for ( int i = 1 ; i < 6 ; i++ )
             {
@@ -328,7 +328,7 @@ public class DisplayHandler implements Runnable
     
                             }
     
-                        // removes current action listener
+                        // removes interactive GUI as action is completed
                         bettingButton.removeActionListener( this ) ;
     
                         // notify that action has been taken
@@ -344,7 +344,7 @@ public class DisplayHandler implements Runnable
                 }   // end if
             
             }
-
+        // waits for betting amount from player
         waitFor( player ) ;
         return bet[ 0 ] ;
 
@@ -377,7 +377,7 @@ public class DisplayHandler implements Runnable
         // Iterates and displays the cards in hand
         player.getHand().displayHand( chosenCard, player, roundPile, frame ) ;
         
-        // waits for player to place bet or play card
+        // waits for player to play card
         waitFor( player ) ;
         return chosenCard[0] ;
 
@@ -412,7 +412,7 @@ public class DisplayHandler implements Runnable
                 continueLabel.setVisible( false ) ;
                 // deletes the interactivity of button
                 turnButtons[ 0 ].removeActionListener( this ) ;
-                // signals that player clicked to confirm
+                // signals that player clicked to confirm action
                 synchronized ( playerName )
                     {
                     playerName.notifyAll() ;
@@ -423,7 +423,7 @@ public class DisplayHandler implements Runnable
 
             } ) ;   // end ActionListener
 
-        // waits for the user to input their name
+        // waits for the user to confirm starting their turn
         waitFor( playerName ) ;
 
         }   // end startTurn()
@@ -444,15 +444,15 @@ public class DisplayHandler implements Runnable
 
 
     /**
-     * @param aCard
-     *     to order card to the highest hierarchy of the table GUI
+     * @param aComponent 
+     *     to order plus component to the highest hierarchy of the table GUI
      *
      * @return True if operation could be executed
      */
-    public static boolean toTop( Card aCard )
+    public static boolean toTop( Plus aComponent )
         {
-        tableComponents.add( aCard ) ;
-        return tableComponents.remove( aCard ) ;
+        tableComponents.add( aComponent ) ;
+        return tableComponents.remove( aComponent ) ;
 
         }   // end toTop()
 
@@ -487,6 +487,7 @@ public class DisplayHandler implements Runnable
     /** Initializes and adds blackScreen to frame/window (invisible) */
     private static void initBlackScreen()
         {
+        // Initializes the black screen
         Component blackScreenShape = new Rectangle( new Color( 20,
                                                                40,
                                                                0 ),
@@ -500,6 +501,7 @@ public class DisplayHandler implements Runnable
         Plus[] hierarchy = new Plus[ 1 ] ;
         hierarchy[ 0 ] = blackScreenShape ;
         blackScreen = initCanvas( hierarchy ) ;
+        // adds black screen to window (is invisible)
         blackScreen.setVisible( false ) ;
         frame.getContentPane().add( blackScreen ) ;
 
@@ -514,6 +516,7 @@ public class DisplayHandler implements Runnable
      */
     private static Canvas initCanvas( Plus[] manyComponentPlus )
         {
+        // Initializes Canvas with window width and height
         Canvas result = new Canvas( manyComponentPlus ) ;
         result.setPreferredSize( new Dimension( WIDTH, HEIGHT ) ) ;
         result.setBackground( new Color( 0, 0, 0, 0 ) ) ;
@@ -526,14 +529,17 @@ public class DisplayHandler implements Runnable
     /** Initializes Continue Label to the bottom enter of the screen (invisible) */
     private static void initContinueLabel()
         {
+        // Initialize continue label and positional coordinates
         continueLabel = new JLabel( "Click Screen to Continue" ) ;
         continueLabel.setBounds( 0, 0, WIDTH, ( HEIGHT * 15 ) / 16 ) ;
         continueLabel.setHorizontalAlignment( SwingConstants.CENTER ) ;
         continueLabel.setVerticalAlignment( SwingConstants.BOTTOM ) ;
         continueLabel.setName( "continueLabel" ) ;
+        // Set the Font and colors of the text
         continueLabel.setFont( new Font( "Calibri", Font.BOLD + Font.ITALIC, 40 ) ) ;
         continueLabel.setForeground( new Color( 240, 240, 240 ) ) ;
         continueLabel.setVisible( false ) ;
+        // adds it to the window
         frame.getLayeredPane().add( continueLabel ) ;
 
         }   // end initContinueLabel()
