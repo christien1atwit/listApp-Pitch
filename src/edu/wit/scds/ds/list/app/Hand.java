@@ -24,6 +24,9 @@
 
 package edu.wit.scds.ds.list.app ;
 
+import javax.swing.JFrame ;
+
+
 /**
  * Representation of a hand of cards
  *
@@ -80,8 +83,8 @@ public class Hand extends Pile
             // Iterate through cards
             for ( Card card : this.cards )
                 {
-                // If card is the same suit, make it playable
-                if ( roundPileSuit == card.getSuit() )
+                // If card is the same suit with RoundPile or Trump Card, make it playable
+                if ( roundPileSuit == card.getSuit() || RoundPile.getTrumpSuit() == card.getSuit() )
                     {
                     card.setIsPlayable( true ) ;
 
@@ -112,15 +115,44 @@ public class Hand extends Pile
             }
 
         }   // end checkPlayableCards()
+    
+    /**
+     * Displays all the cards currently in hand
+     * @param chosenCard variable that indicates the index of the card chosen (in array to be modifiable)
+     * @param player displaying the hand / Thread object
+     * @param roundPile RoundPile that any one of the cards can be dealt to 
+     * @param frame Window to add each card's interactive options
+     */
+    public void displayHand( int[] chosenCard, Player player, RoundPile roundPile, JFrame frame )
+        {
+        for ( int i = 0 ; i < this.cards.size() ; i++ )
+            {
+            this.cards.get( i ).displayCardInHand( i, chosenCard, player, roundPile, frame ) ;
+            
+            }
+        
+        }   // end displayHand()
+    
+    /**
+     * Hides all the cards currently in hand
+     */
+    public void hideHand()
+        {
+        for ( int i = 0 ; i < this.cards.size() ; i++ )
+            {
+            this.cards.get( i ).hideCard() ;
 
-
+            }
+        
+        }   // end hideHand()
+    
     /**
      * @param index
      *     index of the card to play in this.hand
      * @param distributer 
      *     player playing card
      * @param distributerTeam 
-     *     team player belongs to
+     *     team that the player belongs to
      * @param aRoundPile
      *     checks if hand has playable cards of suit if hand hasSuit, then it will
      *     check the card attempting to be played if card is of suit it will return
@@ -155,6 +187,16 @@ public class Hand extends Pile
         return false ;
 
         }   // end playCard()
+    
+    /** Sets all of the cards in hand as unplayable */
+    public void setUnplayable() 
+        {
+        for ( Card card : this.cards )
+            {
+            card.setIsPlayable( false );
+            
+            }
+        }   // setUnplayable()
 
     // Private Methods
 
@@ -180,8 +222,7 @@ public class Hand extends Pile
         return false ;
 
         }   // end containsSuit()
-
-
+    
     /**
      * (optional) test driver
      *

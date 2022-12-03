@@ -24,10 +24,18 @@
 
 package edu.wit.scds.ds.list.app ;
 
+import java.awt.Color ;
+import java.awt.Component ;
+import java.io.File ;
 import java.util.ArrayList ;
 import java.util.Collections ;
+import java.util.LinkedList ;
 import java.util.List ;
 import java.util.Objects ;
+import java.util.Queue ;
+
+import javax.swing.JButton ;
+import javax.swing.JFrame ;
 
 /**
  * Representation of a playing card with a suit and rank.
@@ -50,10 +58,20 @@ import java.util.Objects ;
  * @version 2.3.0 2022-11-20 Draft Implementation
  * @version 2.4.0 2022-11-29 Draft Implementation 2
  */
-public class Card implements Comparable<Card>
+public class Card extends Entity implements Comparable<Card>
     {
-
     // data fields
+    private static final String FILE_PATH = "./data/cards/" ;
+    /** The final width of the card */
+    private static final int WIDTH = 110 ;
+    /** The final height of the card */
+    private static final int HEIGHT = 150 ;
+    /** GUI Component that's added if card is unplayable */
+    private static final Rectangle UNPLAYABLE_CARD = new Rectangle( new Color( 0, 0, 0, 160 ),
+                                                                    0,
+                                                                    0,
+                                                                    WIDTH + 1,
+                                                                    HEIGHT + 1 ) ;
     /** The card's suit */
     public final Suit suit ;
     /** The card's rank within its suit */
@@ -64,9 +82,9 @@ public class Card implements Comparable<Card>
     private boolean isPlayable ;
 
     /*
-     * constructors
+     * Constructor 
      */
-
+    
     /**
      * @param theSuit
      *     this card's suit
@@ -75,39 +93,27 @@ public class Card implements Comparable<Card>
      */
     public Card( final Suit theSuit, final Rank theRank )
         {
+        // Initializes the variables
         this.suit = theSuit ;
         this.rank = theRank ;
         this.priority = 0 ;
+        // initializes a visual Component class that simulates the card's suit
+        // and rank
+        this.components.add( new Image( new File( FILE_PATH + this.suit.getGraphic() +
+                                                  this.rank.getGraphic() + ".jpg" ),// ♠A
+                                        0,
+                                        0,
+                                        WIDTH,
+                                        HEIGHT ) ) ;
+        this.components.add( UNPLAYABLE_CARD ) ;
+        setX( -WIDTH ) ;
+        setY( -HEIGHT ) ;
 
         }   // end 2-arg constructor
-
+    
     /*
      * utility methods
      */
-
-
-    /**
-     * Compares two cards to see if they match, which may be different from them
-     * being {@code equal()}
-     * <p>
-     * The {@code Pile} class requires this method.
-     *
-     * @param otherCard
-     *     the card to compare against this card
-     *
-     * @return {@code true} if the cards match, {@code false} otherwise
-     */
-    public boolean matches( final Card otherCard )
-        {
-        // for now, delegate to equals() - may change based on game's requirements
-        return equals( otherCard ) ;
-
-        }  // end matches()
-
-    /*
-     * general methods
-     */
-
 
     /*
      * (non-Javadoc)
@@ -131,6 +137,115 @@ public class Card implements Comparable<Card>
         return this.rank.getOrder() - otherCard.rank.getOrder() ;
 
         }	// end compareTo()
+
+
+    /**
+     * The card comes from the right of the screen to its spot according to
+     * ordernumber and has interactive functionality depending on if it's playable;
+     * when clicked, the card will try to add itself to the roundPile and removes
+     * such option from the rest of the cards for that turn. . RoundPile
+     *
+     * @param orderNumber
+     *     of the card in its hand to organize physical slot accordingly
+     * @param chosenCard
+     *     variable to be changed when current card is chosen
+     * @param player
+     *     player displaying the hand / Thread object
+     * @param roundPile
+     *     a RoundPile that the card can be played into
+     * @param frame
+     *     to add a component that makes the card interactive
+     */
+    public void displayCardInHand( final int orderNumber,
+                                   int[] chosenCard,
+                                   Player player,
+                                   RoundPile roundPile,
+                                   JFrame frame )
+        {
+        // sets the position that the card will end up
+        this.x = 40 + ( 120 * orderNumber ) ;
+        this.y = 550 ;
+
+        // uses many Transform to simulate an animation for these moving cards
+        Queue<Transform> result = new LinkedList<>() ;
+        for ( int i = -10 ; i <= 0 ; i += 1 )
+            {
+            result.add( new Transform( 0,
+                                       0,
+                                       1,
+                                       1,
+                                       i,
+                                       getX() + ( WIDTH / 2 ),
+                                       ( getY() + ( HEIGHT / 2 ) ) - 8000 ) ) ;
+
+            }
+
+        this.animation.add( result ) ;
+        if ( this.isPlayable )
+            {
+            // Gives the illusion that the card can be pressed/clicked/interacted by
+            // creating overlapping button
+            JButton interactiveCard = new JButton() ;
+            interactiveCard.setBounds( this.x, this.y, WIDTH, HEIGHT ) ;
+            interactiveCard.setName( "cardButton" ) ;
+            // Makes button completely invisible
+            interactiveCard.setBackground( new Color( 0, 0, 0, 0 ) ) ;
+            interactiveCard.setBorder( null ) ;
+            interactiveCard.setOpaque( false ) ;
+            interactiveCard.setContentAreaFilled( false ) ;
+            // Adds listener to make button or 'card' interactive if it's playable
+            
+            interactiveCard.addActionListener( e ->
+                {
+
+                    {
+                    // Plays card if the button on top of the card is clicked
+                    play( roundPile.getNumberOfCards() ) ;
+
+                    chosenCard[ 0 ] = orderNumber ;
+
+                    // Sets card to the top of the GUI table hierarchy
+                    DisplayHandler.toTop( this ) ;
+
+                    // Removes any buttons on window
+                    
+                    Component[] frameComponents = frame.getRootPane().getComponents() ;
+                    for ( int i = frameComponents.length - 1 ; i >= 0 ; i-- )
+                        {
+                        Component currentComponent = frameComponents[ i ] ;
+                        // If button 'belongs' to a card, delete the button/ delete
+                        // the
+                        // rest of interactive cards
+                        if ( ( currentComponent instanceof JButton currentButton ) &&
+                             "cardButton".equals( currentButton.getName() ) )
+                            {
+                            currentButton.removeActionListener( currentButton.getActionListeners()[ 0 ] ) ;
+                            frame.getRootPane().remove( currentComponent ) ;
+
+                            }
+                                       
+                        }   // end for loop 
+                    
+                    // notify that the player has chose to play a card
+                    synchronized ( player )
+                        {
+                        player.notifyAll() ;
+
+                        }
+
+
+                    }
+
+                } ) ;   // end ActionListener
+
+            // add the interactive feature to the window
+            frame.getRootPane().add( interactiveCard, 10 ) ;
+            
+            }
+
+        
+
+        }
 
 
     /*
@@ -171,7 +286,6 @@ public class Card implements Comparable<Card>
 
         }   // end getIsPlayable()
 
-
     /**
      * @return the priority
      */
@@ -180,7 +294,6 @@ public class Card implements Comparable<Card>
         return this.priority ;
 
         }   // end getPriority()
-
 
     /**
      * @return card's rank
@@ -191,7 +304,6 @@ public class Card implements Comparable<Card>
 
         }   // end getRank()
 
-
     /**
      * @return card's suit
      */
@@ -200,6 +312,37 @@ public class Card implements Comparable<Card>
         return this.suit ;
 
         }   // end getSuit()
+
+
+    /**
+     * Goes to the destination of the team that won this card in a neat manner and
+     * has its own designated slot depending on the three parameters.
+     *
+     * @param teamNumber
+     *     the team number that won this card
+     * @param stackNumber
+     *     is the order in the stack that the card belongs to
+     * @param roundsWon
+     *     the number of RoundPiles that the team won
+     */
+    public void goToTeam( int teamNumber,
+                          int stackNumber,
+                          int roundsWon )
+        {
+
+        if ( teamNumber == 1 )
+            {
+            moveTo( 10 + ( roundsWon * 12 ), 100 + ( stackNumber * 40 ) + ( roundsWon * 2 ) ) ;
+
+            }
+
+        if ( teamNumber == 2 )
+            {
+            moveTo( 520 + ( roundsWon * 12 ), 100 + ( stackNumber * 40 ) + ( roundsWon * 2 ) ) ;
+
+            }
+
+        }   // end goToTeam()
 
 
     /*
@@ -213,16 +356,67 @@ public class Card implements Comparable<Card>
                              this.rank ) ;
 
         }   // end hashCode()
-    
-    
-    /** @return if the card is a face card (Jack, Queen, King, Joker)
+
+
+    /**
+     * Card goes to the left of the screen from its current slot.
      */
-    public boolean isFaceCard()
+    public void hideCard()
         {
-        return this.rank == Rank.JACK ||
-               this.rank == Rank.QUEEN ||
-               this.rank == Rank.KING ;
-        }
+        Queue<Transform> result = new LinkedList<>() ;
+
+        // Moves card to the left side of the screen
+        for ( int i = 0 ; i <= 10 ; i++ )
+            {
+            result.add( new Transform( 0,
+                                       0,
+                                       1,
+                                       1,
+                                       i,
+                                       getX() + ( WIDTH / 2 ),
+                                       ( getY() + ( HEIGHT / 2 ) ) - 8000 ) ) ;
+
+            }
+
+        // sets a final position offscreen to make the card seem like it disappeared
+        result.add( new Transform( -500, -500, true ) ) ;
+        this.animation.add( result ) ;
+
+        }   // end hideCard()
+
+
+    /**
+     * Compares two cards to see if they match, which may be different from them
+     * being {@code equal()}
+     * <p>
+     * The {@code Pile} class requires this method.
+     *
+     * @param otherCard
+     *     the card to compare against this card
+     *
+     * @return {@code true} if the cards match, {@code false} otherwise
+     */
+    public boolean matches( final Card otherCard )
+        {
+        // for now, delegate to equals() - may change based on game's requirements
+        return equals( otherCard ) ;
+
+        }  // end matches()
+
+
+    /**
+     * Moves card from wherever its located to the slot of the screen that is
+     * designated as the RoundPile
+     *
+     * @param stackNumber
+     *     is the order in the stack that the card belongs to
+     */
+    public void play( int stackNumber )
+        {
+        moveTo( 340, 220 + ( stackNumber * 40 ) ) ;
+
+        }   // end play()
+
 
     /**
      * @param value
@@ -231,6 +425,19 @@ public class Card implements Comparable<Card>
     public void setIsPlayable( boolean value )
         {
         this.isPlayable = value ;
+        // If true, remove the component that indicates that the card is unplayable
+        if ( value && this.components.contains( UNPLAYABLE_CARD ) )
+            {
+            this.remove( UNPLAYABLE_CARD ) ;
+
+            }
+
+        // If false, add the component that indicates that the card is unplayable
+        if ( !value && !this.components.contains( UNPLAYABLE_CARD ) )
+            {
+            this.add( UNPLAYABLE_CARD ) ;
+
+            }
 
         }   // end setIsPlayable()
 
@@ -256,6 +463,40 @@ public class Card implements Comparable<Card>
         return this.rank.toString() + this.suit.toString() ;
 
         }	// end toString()
+
+    /*
+     * Private utility methods
+     */
+
+    /**
+     * Uses/creates many Transform classes to simulate an animation that moves the
+     * entity from one place to another.
+     *
+     * @param destinationX
+     *     x-coordinate that the card moves to
+     * @param destinationY
+     *     y-coordinate that the card moves to
+     */
+    private void moveTo( int destinationX,
+                         int destinationY )
+        {
+        Queue<Transform> result = new LinkedList<>() ;
+        // Takes 5 frames to move from current coordinates to the destination
+        for ( int i = 0 ; i <= 5 ; i++ )
+            {
+            result.add( new Transform( (int) ( ( i / 5.0 ) * ( ( getX() * -1 ) + destinationX ) ),
+                                       (int) ( ( i / 5.0 ) * ( ( getY() * -1 ) + destinationY ) ),
+                                       1,
+                                       1 ) ) ;
+
+            }
+
+        // Sets the destination coordinates after the card is done moving
+        result.add( new Transform( destinationX, destinationY, true ) ) ;
+
+        this.animation.add( result ) ;
+
+        }   // end moveTo()
 
 
     /**

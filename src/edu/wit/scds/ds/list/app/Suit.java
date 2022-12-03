@@ -63,15 +63,15 @@ public enum Suit
     {
 
 // @formatter:off
-//  Element         Display Name    Graphic     Color 
+//  Element         Display Name    Graphic 
     /** Spades suit */
-    SPADES      (   "Spades",       "♠",        "black" ),
+    SPADES      (   "Spades",       "♠" ),
     /** Diamonds suit */
-    DIAMONDS    (   "Diamonds",     "♦",        "red" ),
+    DIAMONDS    (   "Diamonds",     "♦" ),
     /** Hearts suit */
-    HEARTS      (   "Hearts",       "♥",        "red" ),
+    HEARTS      (   "Hearts",       "♥" ),
     /** Clubs suit */
-    CLUBS       (   "Clubs",        "♣",        "black" )
+    CLUBS       (   "Clubs",        "♣" )
     ;
 // @formatter:on
 
@@ -80,24 +80,18 @@ public enum Suit
     private final String displayName ;
     /** graphic representation of the suit */
     private final String graphic ;
-    /** black or red for a standard, 52-card deck */
-    private final String color ;
     
     /**
      * @param suitDisplayName
      *     more esthetically pleasing for display
      * @param suitGraphic
      *     the 'standard' icon for the suit
-     * @param suitColor
-     *     the 'standard' color for the suit
      */
     private Suit( final String suitDisplayName,
-                  final String suitGraphic,
-                  final String suitColor )
+                  final String suitGraphic )
         {
         this.displayName = suitDisplayName ;
         this.graphic = suitGraphic ;
-        this.color = suitColor ;
 
         }   // end constructor
 
@@ -120,16 +114,6 @@ public enum Suit
         return this.graphic ;
 
         }   // end getGraphic()
-
-
-    /**
-     * @return the color
-     */
-    public String getColor()
-        {
-        return this.color ;
-
-        }   // end getColor()
 
 
     /*
@@ -173,8 +157,7 @@ public enum Suit
                                aSuit,
                                aSuit.graphic,
                                aSuit.name(),
-                               aSuit.displayName,
-                               aSuit.color ) ;
+                               aSuit.displayName ) ;
             }	// end for
 
         }	// end main()
