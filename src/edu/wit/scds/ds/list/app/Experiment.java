@@ -1,20 +1,12 @@
 
 package edu.wit.scds.ds.list.app ;
 
-import java.io.ByteArrayInputStream ;
-import java.util.Scanner ;
-import java.util.concurrent.locks.Condition ;
-import java.util.concurrent.locks.Lock ;
-import java.util.concurrent.locks.ReentrantLock ;
-
-import javax.swing.JTextPane ;
-
 /**
- * @author yeek1
+ * @author Kai Yee
  *
  * @version 1.0.0 2022-11-23 Initial implementation
  */
-public class Experiment implements Runnable
+public class Experiment
     {
     public static void main( String[] args )
         {
@@ -29,29 +21,11 @@ public class Experiment implements Runnable
 
     private static void test()
         {
-        /*
-        synchronized (h)
-        {
-            try
-                {
-                h.wait();
-                
-    
-                }
-            catch ( InterruptedException e )
-                {
-                // TODO Auto-generated catch block
-                e.printStackTrace() ;
-    
-                }
-        }
-        
-        System.out.println("sdsa") ;
-*/      
+
         Player p = new Player( new Hand() ) ;
         int[] bet = new int[1] ;
         int[] chosenCard = new int[1] ;
-        boolean makeBet = true ;
+        boolean makeBet = false ;
         RoundPile rp = new RoundPile() ;
         String playerName ;
         (new RoundPile()).add( new Card(Suit.DIAMONDS, Rank.EIGHT), p, new Team(new Player(new Hand()), new Player(new Hand())) ) ;
@@ -105,12 +79,6 @@ public class Experiment implements Runnable
 
 
 
-    @Override
-    public void run()
-        {
-        test() ;
-
-        }
     
     /**
      * @param obj
