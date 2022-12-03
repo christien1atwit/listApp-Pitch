@@ -6,7 +6,7 @@ import java.util.Scanner ;
 
 /**
  * 
- * @author Dennis Field // TODO
+ * @author Dennis Field // DONE
  *
  * @version 1.0.0 2022-11-19 Initial implementation
  * @version 1.0.1 2022-11-19 Template implementation
@@ -31,7 +31,7 @@ public class Pitch
     private static Player betHolder ;
     private static Team betTeam ;
     
-    private static Scanner pInput = new Scanner( System.in ) ;
+    
     
     // main
     
@@ -86,7 +86,10 @@ public class Pitch
          * Either way, whatever techniques you use to integrate/implement this-
          * Godspeed. 
          */
-        // TODO implement this
+        // DONE implement this
+        
+        Thread graphics = new Thread( new DisplayHandler() ) ;
+        graphics.start() ; 
         
         // Initialize Deck
         Deck deck = new Deck() ;
@@ -97,32 +100,37 @@ public class Pitch
         
         // Initialize currentRoundPile
         currentRoundPile = new RoundPile() ;
-        
-        System.out.printf("%nWelcome to Pitch!%nPlease input player one's name: ") ;
-        teams[0].getPlayers()[0].setName( pInput.next() );
-        System.out.printf("%nPlease input player two's name: ") ;
-        teams[1].getPlayers()[0].setName( pInput.next() ) ;
-        System.out.printf("%nPlease input player three's name: ") ;
-        teams[0].getPlayers()[1].setName( pInput.next() ) ;
-        System.out.printf("%nPlease input player four's name: ") ;
-        teams[1].getPlayers()[1].setName( pInput.next() ) ;
-        
-        System.out.printf( "%nTeam 1: %s and %s", teams[0].getPlayers()[0].getName(), teams[0].getPlayers()[1].getName() ) ;
-        System.out.printf( "%nTeam 2: %s and %s%n", teams[1].getPlayers()[0].getName(), teams[1].getPlayers()[1].getName() ) ;
-        
         currentPlayer = teams[0].getPlayers()[0] ;
         currentTeam = teams[0] ;
+        
+        for (int i = 0 ; i < 4 ; i++ )
+            {
+            currentPlayer.setName( DisplayHandler.getPlayerName( i + 1 ) );
+            nextPlayer() ;
+            
+            }  
         
         Boolean gameWon = false ;
         
         while( !gameWon )
             {
-            System.out.printf( "%nScore:%nTeam 1: %d%nTeam 2: %d%n", teams[0].getScore(), teams[1].getScore() ) ;
             deck.deal( teams ) ;
             gameWon = startSet() ;
             setReset( deck ) ;
             
             }
+        // Checks what team number won
+        if (winner == teams[ 0 ] )
+            {
+            DisplayHandler.teamWon( 1 );
+            }
+        
+        if (winner == teams[ 1 ] )
+            {
+            DisplayHandler.teamWon( 2 );
+            
+            }
+        
         System.out.printf("%nCongratulations %s and %s! You won!", winner.getPlayers()[0].getName(), winner.getPlayers()[1].getName() ) ;
         
         }   // end main()
@@ -132,27 +140,29 @@ public class Pitch
             startBet() ;
             for( int i = 0; i < 6; i++ )
                 {
-                startRound( i ) ;
+                startRound() ;
                 
                 }
             return giveScore() ;
             
-            }
+            }   // end startSet()
         
+
         private static void startBet()
             {
             for( int i = 0; i < 4; i++ )
                 {
+                DisplayHandler.startTurn( currentPlayer );
                 if( bet == 1 && i == 3)
                     {
-                    System.out.printf( "%nNo bets placed. Bet set to 2. Bet holder: %s%n", currentPlayer.getName() ) ;
                     betHolder = currentPlayer ;
                     betTeam = currentTeam ;
                     break ;
                     
                     }
-                takeBet( currentPlayer) ;
+                takeBet( currentPlayer ) ;
                 nextPlayer() ;
+                DisplayHandler.endTurn( currentPlayer, teams ) ;
                 
                 }
             startingPlayer = betHolder ;
@@ -161,100 +171,55 @@ public class Pitch
         
             }
         
-        private static void startRound( int round )
+        private static void startRound()
             {
-            RoundPile roundPile = new RoundPile() ;
-            currentRoundPile = roundPile ;
+            currentRoundPile = new RoundPile() ;
             for( int i = 0; i < 4; i++ )
                 {
-                currentPlayer.getHand().checkPlayableCards( roundPile );
-                if( i > 0 || round > 0 )
+                DisplayHandler.startTurn( currentPlayer );
+                currentPlayer.getHand().checkPlayableCards( currentRoundPile );
+                currentPlayer.getHand().playCard( DisplayHandler.showPlayerHand( currentPlayer, currentRoundPile ), currentPlayer, currentTeam, currentRoundPile ) ;
+                if ( i == 3 )
                     {
-                System.out.printf( "%nRound Pile: %s Trump Suit: %s" + "%nHand: %s" +
-                                   "%n%s, its your turn. What card would you like to play? (# from left in hand): ", 
-                                       currentRoundPile.toString(), Pile.getTrumpSuit().toString(),
-                                       currentPlayer.getHand().toString(), currentPlayer.getName() ) ;
-                    }
-                else 
-                    {
-                    System.out.printf( "%nRound Pile: %s Trump Suit: Undefined" + "%nHand: %s" +
-                                       "%n%s, its your turn. What card would you like to play? (# from left in hand): ", 
-                                       currentRoundPile.toString(), currentPlayer.getHand().toString(), currentPlayer.getName() ) ;
-                    }
-                Boolean gotCard = false ;
-                do
-                    {
-                    // Player input an integer
-                    if( pInput.hasNextInt() )
+                    
+                    // Moves cards of RoundPiles to the correlating team 
+                    if ( currentRoundPile.getOwner() == teams[0] )
+                    for ( int j = 0 ; j < 4 ; j++ )
                         {
-                        int x = pInput.nextInt() ;
-                        // input integer is within bounds of hand size
-                        if( x > 0 && x < currentPlayer.getHand().numberOfCards + 1 )
+                        currentRoundPile.get( j ).goToTeam( 1, j, teams[0].getRoundPiles().size() );
+                        
+                        }
+                    if ( currentRoundPile.getOwner() == teams[1] )
+                        for ( int j = 0 ; j < 4 ; j++ )
                             {
-                            Boolean cardPlayed = currentPlayer.getHand().playCard( x - 1, currentPlayer, currentTeam, currentRoundPile, round ) ;
-                            // makes sure card was played
-                            if ( cardPlayed )
-                                {
-                                gotCard = true ;
-                                System.out.printf( "%nCard played%n" ) ;
-                                nextPlayer() ;
-                                break ;
-                                }
-                            System.out.printf( "%nCannot play this card. What card would you like to play? " ) ;
+                            currentRoundPile.get( j ).goToTeam( 2, j, teams[1].getRoundPiles().size() );
                             
                             }
-                        else
-                            {
-                            System.out.printf( "%nNot withnin bounds of hand size. Please input a new card number or Skip: " ) ;
-                            }
-                        
-                        }
-                    // Player didn't input integer
-                    else if( pInput.hasNext() )
-                        {
-                        System.out.printf("%nPlease input a card number between 1 and the number of cards in your hand: " ) ;
-                        
-                        }
                     
-                    } while( !gotCard ) ;
+                    // adds RoundPile to the owner of the team
+                    currentRoundPile.getOwner().addRoundPile( currentRoundPile ) ;
+                    
+                    DisplayHandler.updateCounter( teams[0].getTallyPoints(), teams[1].getTallyPoints(), teams[0].getScore(), teams[1].getScore() );
+                    
+                    }
                 
+                DisplayHandler.endTurn( currentPlayer, teams );
+                nextPlayer() ;
                 }
-            currentRoundPile.getOwner().addRoundPile( currentRoundPile ) ;
-            currentPlayer = currentRoundPile.getCreator() ;
-            System.out.printf( "%nRound Winner: %s%n", currentPlayer.getName() ) ;
+                DisplayHandler.updateCounter( teams[0].getTallyPoints(), teams[1].getTallyPoints(), teams[0].getScore(), teams[1].getScore() );
             
             }   
         
         private static void takeBet( Player player)
             {
-            System.out.printf( "%nHand: " + player.getHand().toString() + "%n%s, What is your bet? (Current Bet: %d): ", player.getName(), bet ) ;
-            Boolean betTaken = false ;
-            do
+            int bettingValue ;
+            bettingValue = DisplayHandler.getBet( player, bet, betHolder ) ;
+            if ( bettingValue != 0 )
                 {
-                if( pInput.hasNextInt() )
-                    {
-                    int x = pInput.nextInt() ;
-                    if ( x > bet && x < 6 )
-                        {
-                        bet = x ;
-                        betHolder = currentPlayer ;
-                        betTeam = currentTeam ;
-                        betTaken = true ;
-                        }
-                    }
-                else if ( pInput.next().contentEquals( "Skip" ) )
-                    {
-                    System.out.printf( "%nBet skipped." ) ;
-                    betTaken = true ;
-                    
-                    }
-                else
-                    {
-                    System.out.printf( "%nInvalid input. Please enter a number %d - 5", bet+1 ) ;
-                    
-                    }
-                
-                } while( !betTaken ) ;
+                bet = bettingValue ;
+                betHolder = currentPlayer ;
+                betTeam = currentTeam ;
+                }
             
             }
         
@@ -287,7 +252,7 @@ public class Pitch
             
             
             }
-        
+
         private static boolean giveScore()
             {
             int scoreTeam1 = 0 ;
@@ -375,8 +340,6 @@ public class Pitch
                 
                 }
             
-            System.out.printf( "%nScoreTeam1: %d, ScoreTeam2: %d%n", scoreTeam1, scoreTeam2 ) ;
-            
             if( betTeam == teams[0] && scoreTeam1 >= bet )
                 {
                 teams[0].addScore( scoreTeam1 ) ;
@@ -434,14 +397,30 @@ public class Pitch
                 
                 }
             
+            DisplayHandler.updateCounter( teams[0].getTallyPoints(), teams[1].getTallyPoints(), teams[0].getScore(), teams[1].getScore() );
+            
             return false ;
         
             }
 
         private static void setReset( Deck deck )
             {
+            DisplayHandler.resetTable() ;
+            
             teams[0].dealBack( deck ) ;
             teams[1].dealBack( deck ) ;
+            
+            // stops current thread to take some time to process dealing back to the deck
+            try
+                {
+                Thread.sleep( 1000/4 );
+
+                }
+            catch ( InterruptedException e )
+                {
+                e.printStackTrace() ;
+
+                }
             
             int scoreTeam1 = teams[0].getScore() ;
             int scoreTeam2 = teams[1].getScore() ;
@@ -457,7 +436,7 @@ public class Pitch
             teams[1].getPlayers()[0].setBet( 0 ) ;
             teams[1].getPlayers()[1].setBet( 0 ) ;
             bet = 1 ;
-            
+            RoundPile.resetTrumpSuit();
             currentPlayer = startingPlayer ;
             nextPlayer() ;
             startingPlayer = currentPlayer ;

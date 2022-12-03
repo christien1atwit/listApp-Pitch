@@ -72,10 +72,15 @@ public class Card extends Entity implements Comparable<Card>
                                                                     0,
                                                                     WIDTH + 1,
                                                                     HEIGHT + 1 ) ;
+    private static final Rectangle TRUMP_CARD = new Rectangle( new Color( 240, 230, 0, 160 ),
+                                                                    0,
+                                                                    0,
+                                                                    WIDTH + 1,
+                                                                    HEIGHT + 1 ) ;
     /** The card's suit */
-    public final Suit suit ;
+    private final Suit suit ;
     /** The card's rank within its suit */
-    public final Rank rank ;
+    private final Rank rank ;
     /** The card's priority */
     private int priority ;
     /** If the card is playable */
@@ -162,6 +167,7 @@ public class Card extends Entity implements Comparable<Card>
                                    RoundPile roundPile,
                                    JFrame frame )
         {
+        this.animation.clear() ;
         // sets the position that the card will end up
         this.x = 40 + ( 120 * orderNumber ) ;
         this.y = 550 ;
@@ -332,13 +338,13 @@ public class Card extends Entity implements Comparable<Card>
 
         if ( teamNumber == 1 )
             {
-            moveTo( 10 + ( roundsWon * 12 ), 100 + ( stackNumber * 40 ) + ( roundsWon * 2 ) ) ;
+            moveTo( 10 + ( roundsWon * 24 ), 100 + ( stackNumber * 40 ) + ( roundsWon * 2 ) ) ;
 
             }
 
         if ( teamNumber == 2 )
             {
-            moveTo( 520 + ( roundsWon * 12 ), 100 + ( stackNumber * 40 ) + ( roundsWon * 2 ) ) ;
+            moveTo( 520 + ( roundsWon * 24 ), 100 + ( stackNumber * 40 ) + ( roundsWon * 2 ) ) ;
 
             }
 
@@ -416,9 +422,15 @@ public class Card extends Entity implements Comparable<Card>
         moveTo( 340, 220 + ( stackNumber * 40 ) ) ;
 
         }   // end play()
-
-
+    
+    /** Resets the list of animation for this card */
+    public void resetAnimation()
+        {
+        this.animation.clear() ;
+        
+        }   // end resetAnimation() ;
     /**
+     * Changes display if the card is a playable card
      * @param value
      *     to set the play-ability of the card
      */
@@ -440,7 +452,27 @@ public class Card extends Entity implements Comparable<Card>
             }
 
         }   // end setIsPlayable()
+    
+    /**
+     * Changes display if the card is a trump card
+     * @param value
+     *     to set whether the card is a trump card
+     */
+    public void setTrumpCard( boolean value )
+        {
+        // If false, remove the component that indicates that the card is the trump card
+        if ( !value && this.components.contains( TRUMP_CARD ) )
+            {
+            this.remove( TRUMP_CARD ) ;
 
+            }
+        // If true, add the component that indicates that the card is the trump card
+        if ( value && !this.components.contains( TRUMP_CARD ) )
+            {
+            this.add( TRUMP_CARD ) ;
+
+            }
+        }
 
     /**
      * @param value

@@ -42,7 +42,7 @@ public class DisplayHandler implements Runnable
     /** Height of the window */
     private static final int HEIGHT = 825 ;
     /** Frames per Second updating table graphics */
-    private static final int FPS = 24 ;
+    private static final int FPS = 16 ;
     /** Window */
     private static JFrame frame ;
     /** GUI Label that displays both team points and score */
@@ -107,20 +107,14 @@ public class DisplayHandler implements Runnable
 
         }   // end add()
 
-
-    /**
-     * @param player
-     *     exits all of the cards from the player's hand from the screen
+    /** 
+     * Sets up confirmation screen to confirm the end of turn 
+     * @param player 
+     *      Player that the turn is ending on
+     * @param teams 
+     *      Team's RoundPiles to save onto GUI
      */
-    public static void hideHand( Player player )
-        {
-        player.getHand().hideHand() ;
-
-        }   // end hideHand()
-
-
-    /** Sets up confirmation screen to confirm the end of turn */
-    public static void endTurn()
+    public static void endTurn( Player player, Team[] teams )
         {
         Object threadHandler = new Object() ;
         // makes continue label and confirm screen visible
@@ -150,23 +144,153 @@ public class DisplayHandler implements Runnable
             } ) ;   // end ActionListener()
         // waits thread for the user to confirm clicking the screen
         waitFor( threadHandler ) ;
+        DisplayHandler.hideHand( player );
+        
+        try
+            {
+            Thread.sleep( 650 );
 
+            }
+        catch ( InterruptedException e )
+            {
+            e.printStackTrace() ;
+
+            }
+        
+        for ( int i = 0 ; i < player.getHand().getNumberOfCards() ; i++ ) 
+            {
+            tableComponents.remove( player.getHand().get( i ) ) ;
+            player.getHand().get( i ).resetAnimation(); 
+            }
+        
+        table.redraw( tableComponents.toArray( new Plus[ tableComponents.size() ] ) ) ;
+        
+        try
+            {
+            Thread.sleep( 1000/4 );
+
+            }
+        catch ( InterruptedException e )
+            {
+            e.printStackTrace() ;
+
+            }
+        
         }   // end endTurn()
 
 
+    /**
+     * @param player
+     *     Player that's making the bet
+     * @param minimumBet
+     *     The minimum bet that the play must place
+     * @param highestBetter
+     *     Player with the highest bet
+     *
+     * @return the bet values for the player
+     */
+    public static int getBet( Player player,
+                              int minimumBet,
+                              Player highestBetter )
+        {
+        // Initializes the changing/result value
+        int[] bet = new int[ 1 ] ;
+        // Displays Hand
+        blackScreen.setVisible( false );
+        player.getHand().setUnplayable() ;
+        player.getHand().displayHand( new int[ 1 ], player, new RoundPile(), frame ) ;
+
+        // Iterates through to show all of the necessary betting options
+        makeBetGUI[ 0 ].setVisible( true ) ;
+        if ( highestBetter == null )
+            {
+            ( (JLabel) makeBetGUI[ 0 ] ).setText( "<html> No Bet holders! <br>&nbsp&nbsp&nbsp Make Bet: " ) ;
+
+            }
+        else
+            {
+            ( (JLabel) makeBetGUI[ 0 ] ).setText( "<html> Bet Holder: " + highestBetter.getName() +
+                                                  "<html><br>&nbsp&nbsp&nbsp Make Bet: " ) ;
+
+            }
+
+        for ( int i = 1 ; i < 6 ; i++ )
+            {
+            final int bettingValue = i ;
+            // ensures that user can either pass or must bet more than the minimum
+            // amount
+            if ( ( i == 1 ) || ( i > minimumBet ) )
+                {
+                JButton bettingButton = (JButton) makeBetGUI[ i ] ;
+                bettingButton.setVisible( true ) ;
+                // makes each betting button interactive
+                bettingButton.addActionListener( new ActionListener()
+                    {
+
+                    @Override
+                    public void actionPerformed( ActionEvent e )
+                        {
+                        // Establishes a difference between passing value and betting
+                        if ( bettingValue == 1 )
+                            {
+                            bet[ 0 ] = 0 ;
+
+                            }
+                        else
+                            {
+                            bet[ 0 ] = bettingValue ;
+
+                            }
+
+                        // When bet is complete- hide the GUI
+                        for ( JComponent bettingGUI : makeBetGUI )
+                            {
+                            bettingGUI.setVisible( false ) ;
+
+                            }
+
+                        // removes interactive GUI as action is completed
+                        bettingButton.removeActionListener( this ) ;
+
+                        // notify that action has been taken
+                        synchronized ( player )
+                            {
+                            player.notifyAll() ;
+
+                            }
+
+                        }
+
+                    } ) ;   // end ActionListener()
+
+                }   // end if
+
+            }
+
+        // waits for betting amount from player
+        waitFor( player ) ;
+        // Hides Hand
+        player.getHand().hideHand(); 
+        return bet[ 0 ] ;
+
+        }   // getBet()
+    
     /**
      * Shows a Caption and a field in which the user can enter text so that can
      * modify/create their name.
      *
      * @param playerNumber
      *     The number/ID of the player
+     *
      * @return String of the player's name
      */
     public static String getPlayerName( int playerNumber )
         {
         StringBuilder playerName = new StringBuilder() ;
         // Temporarily sets currentPlayer as their id
-        ( (JLabel) playerSetup[ 0 ] ).setText( "Player " + playerNumber + ":" ) ;
+        currentPlayerLabel.setText( "<html>Player " + playerNumber ) ;
+        ( (JLabel) playerSetup[ 0 ] ).setText( "<html>Team " + ( ( ( playerNumber - 1 ) % 2 ) + 1 ) +
+                                               "<html><br>Player " + playerNumber + ":" ) ;
         // Shows a black screen to use as a temporary background
         blackScreen.setVisible( true ) ;
         // Shows GUI for getting player name
@@ -191,7 +315,7 @@ public class DisplayHandler implements Runnable
                     // if user hits return key, set it to the player's name
                     line.replaceAll( "\n", "" ) ;
                     playerName.append( line ) ;
-
+                    
                     synchronized ( playerName )
                         {
                         playerName.notifyAll() ;
@@ -204,7 +328,6 @@ public class DisplayHandler implements Runnable
                         component.setVisible( false ) ;
 
                         }
-
                     textPane.getDocument().removeDocumentListener( this ) ;
 
                     }
@@ -231,12 +354,24 @@ public class DisplayHandler implements Runnable
 
         // waits for user to type in their name and return
         waitFor( playerName ) ;
+        // resets text
+        ( (JTextPane) playerSetup[ 1 ] ).setText( "" ) ;
 
         return playerName.toString() ;
 
         }   // getPlayerName()
 
+    /**
+     * @param player
+     *     exits all of the cards from the player's hand from the screen
+     */
+    public static void hideHand( Player player )
+        {
+        player.getHand().hideHand() ;
 
+        }   // end hideHand()
+
+    
     /**
      * Forever looping clock that's responsible for constantly updating graphics
      * depending on the FPS.
@@ -267,8 +402,15 @@ public class DisplayHandler implements Runnable
             }
 
         }   // end mainClock()
-
-
+    
+    /** Resets the table GUI */
+    public static void resetTable() 
+        {
+        tableComponents.clear() ;
+        table.redraw( tableComponents.toArray( new Plus[ tableComponents.size() ] ) ) ;
+        
+        }   // end resetTable()
+    
     @Override
     public void run()
         {
@@ -276,79 +418,8 @@ public class DisplayHandler implements Runnable
         mainClock() ;
 
         }   // end run()
-    
-    /** 
-     * @param player 
-     *      Player that's making the bet
-     * @param minimumBet 
-     *      The minimum bet that the play must place
-     * @return the bet values for the player
-     */
-    public static int getBet( Player player, int minimumBet )
-        {
-        // Initializes the changing/result value
-        int[] bet = new int[ 1 ] ;
-        // Displays Hand
-        player.getHand().setUnplayable() ;
-        player.getHand().displayHand( new int[ 1 ], player, new RoundPile(), frame ) ;
 
-        // Iterates through to show all of the necessary betting options
-        makeBetGUI[ 0 ].setVisible( true ) ;
-        for ( int i = 1 ; i < 6 ; i++ )
-            {
-            final int bettingValue = i ;
-            // ensures that user can either pass or must bet more than the minimum amount
-            if ( i == 1 || i > minimumBet )
-                {
-                JButton bettingButton = (JButton) makeBetGUI[ i ] ;
-                bettingButton.setVisible( true ) ;
-                // makes each betting button interactive
-                bettingButton.addActionListener( new ActionListener()
-                    {
-    
-                    @Override
-                    public void actionPerformed( ActionEvent e )
-                        {
-                        // Establishes a difference between passing value and betting
-                        if ( bettingValue == 1 )
-                            {
-                            bet[ 0 ] = 0 ;
-    
-                            }
-                        else
-                            {
-                            bet[ 0 ] = bettingValue ;
-    
-                            }
-    
-                        // When bet is complete- hide the GUI
-                        for ( JComponent bettingGUI : makeBetGUI )
-                            {
-                            bettingGUI.setVisible( false ) ;
-    
-                            }
-    
-                        // removes interactive GUI as action is completed
-                        bettingButton.removeActionListener( this ) ;
-    
-                        // notify that action has been taken
-                        synchronized ( player )
-                            {
-                            player.notifyAll() ;
-    
-                            }
-    
-                        }
-    
-                    } ) ;   // end ActionListener()
-                }   // end if
-            
-            }
-        // waits for betting amount from player
-        waitFor( player ) ;
-        return bet[ 0 ] ;
 
-        }
 
     /**
      * Displays the hand of the player and multiple betting options.
@@ -357,15 +428,15 @@ public class DisplayHandler implements Runnable
      *     The current player that is responsible for making decisions
      * @param roundPile
      *     The current RoundPile at play
-     * @return 
-     *     Index of the card in player's hand that's chosen by the user
+     *
+     * @return Index of the card in player's hand that's chosen by the user
      */
     public static int showPlayerHand( Player player,
-                                    RoundPile roundPile )
+                                      RoundPile roundPile )
         {
-        // Initializes the changing/returning value 
-        int[] chosenCard = new int[1] ;
-        
+        // Initializes the changing/returning value
+        int[] chosenCard = new int[ 1 ] ;
+
         // If victory Label was ever displayed at the end of the turn, make it
         // invisible
         if ( victoryLabel.isVisible() )
@@ -376,25 +447,35 @@ public class DisplayHandler implements Runnable
 
         // Iterates and displays the cards in hand
         player.getHand().displayHand( chosenCard, player, roundPile, frame ) ;
-        
+
         // waits for player to play card
         waitFor( player ) ;
-        return chosenCard[0] ;
+        try
+            {
+            Thread.sleep( 1000/2 );
 
-        }   // end executeStartTurn()
+            }
+        catch ( InterruptedException e )
+            {
+            e.printStackTrace() ;
+
+            }
+        return chosenCard[ 0 ] ;
+
+        }   // end showPlayerHand()
 
 
     /**
      * Sets the screen for starting the turn and waits for the user to click the
      * screen.
      *
-     * @param playerName
+     * @param player
      *     Sets the current player's name in the GUI
      */
-    public static void startTurn( String playerName )
+    public static void startTurn( Player player )
         {
         // updates current player GUI
-        currentPlayerLabel.setText( playerName ) ;
+        currentPlayerLabel.setText( player.getName() ) ;
         // makes black screen, continue label and confirm screen visible
         blackScreen.setVisible( true ) ;
         turnButtons[ 0 ].setVisible( true ) ;
@@ -413,9 +494,9 @@ public class DisplayHandler implements Runnable
                 // deletes the interactivity of button
                 turnButtons[ 0 ].removeActionListener( this ) ;
                 // signals that player clicked to confirm action
-                synchronized ( playerName )
+                synchronized ( player )
                     {
-                    playerName.notifyAll() ;
+                    player.notifyAll() ;
 
                     }
 
@@ -424,27 +505,28 @@ public class DisplayHandler implements Runnable
             } ) ;   // end ActionListener
 
         // waits for the user to confirm starting their turn
-        waitFor( playerName ) ;
+        waitFor( player ) ;
 
         }   // end startTurn()
 
 
     /**
-     * Displays which team scored
+     * Displays which team won
      *
      * @param teamNumber
-     *     team number/ID that scored
+     *     team number/ID that won
      */
-    public static void teamScored( int teamNumber )
+    public static void teamWon( int teamNumber )
         {
-        victoryLabel.setText( "Team " + teamNumber + " Scored!" ) ;
+        blackScreen.setVisible( true );
+        victoryLabel.setText( "Team " + teamNumber + " WON!" ) ;
         victoryLabel.setVisible( true ) ;
 
         }   // endScored()
 
 
     /**
-     * @param aComponent 
+     * @param aComponent
      *     to order plus component to the highest hierarchy of the table GUI
      *
      * @return True if operation could be executed
@@ -624,10 +706,10 @@ public class DisplayHandler implements Runnable
     private static void initPlayerName()
         {
         playerSetup = new JComponent[ 2 ] ;
-        playerSetup[ 0 ] = new JLabel( "Player 4: " ) ;
+        playerSetup[ 0 ] = new JLabel( "Player 1: " ) ;
         playerSetup[ 0 ].setFont( new Font( "Calibri", Font.BOLD, 80 ) ) ;
         playerSetup[ 0 ].setForeground( new Color( 200, 100, 100 ) ) ;
-        playerSetup[ 0 ].setBounds( -240, 0, WIDTH, HEIGHT ) ;
+        playerSetup[ 0 ].setBounds( -240, -70, WIDTH, HEIGHT ) ;
         ( (JLabel) playerSetup[ 0 ] ).setHorizontalAlignment( SwingConstants.CENTER ) ;
         ( (JLabel) playerSetup[ 0 ] ).setVerticalAlignment( SwingConstants.CENTER ) ;
         playerSetup[ 0 ].setVisible( false ) ;

@@ -22,8 +22,6 @@ public class RoundPile extends Pile
     private static Suit trumpSuit ;
     /** Player who started the RoundPile */
     private Player creator ;
-    /** Number of face cards in the list */
-    private int faceCount ;
     /** Highest valued card in the current RoundPile */
     private Card highestCard ;
     /** Highest valued card in the pile of the trump suit */
@@ -46,7 +44,6 @@ public class RoundPile extends Pile
     public RoundPile()
         {
         // Initializes faceCount and tallyPoints and exists Jack
-        this.faceCount = 0 ;
         this.tallyPoints = 0 ;
         this.existsTrumpJack = false ;
         this.highestTrumpCard = null ;
@@ -71,25 +68,19 @@ public class RoundPile extends Pile
      */
     public void add( Card newCard,
                      Player distributer,
-                     Team distributerTeam, 
-                     int round )
+                     Team distributerTeam )
         {
         // If there is no Trump suit, make this card's suit be the trump suit
         if ( trumpSuit == null )
             {
             trumpSuit = newCard.getSuit() ;
+            newCard.setTrumpCard( true ) ;
             
             }
 
         // Adds card to this pile and updates tally points and face counter
         add( newCard ) ;
-        this.tallyPoints += newCard.rank.getPoints() ;
-
-        if ( newCard.isFaceCard() )
-            {
-            this.faceCount++ ;
-
-            }
+        this.tallyPoints += newCard.getRank().getPoints() ;
 
         // if newCard is the RoundPile's first card, initialize the other variables
         if ( this.cards.size() == 1 )
@@ -98,22 +89,17 @@ public class RoundPile extends Pile
             this.highestCard = newCard ;
             this.owner = distributerTeam ;
             this.suitType = newCard.getSuit() ;
-            if ( round == 0 )
-                {
-                Pile.setTrumpSuit( newCard.getSuit() );
-                
-                }
             
             }
         // Checks if card is the the trump suit's Jack
-        if ( newCard.getSuit() == Pile.getTrumpSuit() && newCard.getRank().getOrder() == 11 )
+        if ( newCard.getSuit() == trumpSuit && newCard.getRank().getOrder() == 11 )
             {
             this.existsTrumpJack = true ;
             
             }
         
         // Sets the priorities of the card before comparison
-        if ( Pile.getTrumpSuit() == newCard.getSuit() )
+        if ( trumpSuit == newCard.getSuit() )
             {
             newCard.setPriority( 2 ) ;
 
@@ -182,14 +168,6 @@ public class RoundPile extends Pile
         return this.creator ;
 
         }   // end getCreator()
-
-
-    /** @return how many cards in RoundPile are face cards */
-    public int getFaceCount()
-        {
-        return this.faceCount ;
-
-        }   // end getFaceCount()
 
 
     /** @return Highest Card in RoundPile */
@@ -264,35 +242,6 @@ public class RoundPile extends Pile
 
         }   // end existsTrumpJack()
     
-    /**
-     * (optional) test driver
-     *
-     * @param args
-     *     -unused-
-     */
-    public static void main( final String[] args )
-        {
-        // OPTIONAL for testing and debugging
-        RoundPile j = new RoundPile() ;
-<<<<<<< HEAD
-        //j.add( new Card(Suit.HEARTS, Rank.ACE), new Player(new Hand()), new Team(new Player(new Hand()), new Player(new Hand())) ) ;
-        //System.out.println( j.trumpSuit ) ;
-=======
-        j.add( new Card(Suit.HEARTS, Rank.ACE), new Player(new Hand()), new Team(new Player(new Hand()), new Player(new Hand())) ) ;
-        System.out.println( RoundPile.trumpSuit ) ;
->>>>>>> branch 'main' of git@github.com:christien1atwit/listApp-Pitch.git
-        System.out.println( j.getHighestTrumpCard() ) ;
-        
-        RoundPile k = new RoundPile() ;
-<<<<<<< HEAD
-        //k.add( new Card(Suit.DIAMONDS, Rank.JACK), new Player(new Hand()), new Team(new Player(new Hand()), new Player(new Hand())) ) ;
-        //System.out.println( k.trumpSuit ) ;
-=======
-        k.add( new Card(Suit.DIAMONDS, Rank.JACK), new Player(new Hand()), new Team(new Player(new Hand()), new Player(new Hand())) ) ;
-        System.out.println( RoundPile.trumpSuit ) ;
->>>>>>> branch 'main' of git@github.com:christien1atwit/listApp-Pitch.git
-        System.out.println( k.getHighestTrumpCard() ) ;
-        
-        }   // end main()
+
     }
 // end class RoundPile

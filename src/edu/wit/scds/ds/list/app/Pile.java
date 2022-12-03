@@ -47,8 +47,6 @@ public class Pile
     protected List<Card> cards ;   // instantiate an ArrayList or LinkedList in the constructor
     /** Number of cards in List<Card> cards */
     protected int numberOfCards ;
-    private static Suit trumpSuit ;
-    
     // Constructor
     
     /**
@@ -74,12 +72,20 @@ public class Pile
         {
         // increment number of cards as well
         // DONE implement this
-        this.cards.add( 0, newCard ) ; //Adds the new card to the 'top' of the pile
+        this.cards.add( newCard ) ; //Adds the new card to the 'top' of the pile
         this.numberOfCards++ ;
         
         }   // end add()
     
-   
+    /**
+     * @param index of the desired card in pile
+     * @return Card
+     */
+    public Card get( int index )
+        {
+        return this.cards.get( index ) ;
+        
+        }
     
     /**
      * 
@@ -148,29 +154,8 @@ public class Pile
        
         
         }   // end 0-arg remove()
-    
-    /**
-     * Set trump suit to suit
-     * 
-     * @param suit - suit to set
-     */
-    public static void setTrumpSuit( Suit suit )
-        {
-        trumpSuit = suit ;
-        
-        }
-    
-    /**
-     * 
-     * @return
-     *      trump suit for set
-     */
-    public static Suit getTrumpSuit()
-        {
-        return trumpSuit ;
-        
-        }
 
+    
     /*
      * (non-Javadoc)
      * @see java.lang.Object#toString()
