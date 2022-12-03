@@ -17,6 +17,9 @@ package edu.wit.scds.ds.list.app ;
 public class RoundPile extends Pile
     {
 
+    // Data fields
+    /** Suit that trumps all the other suits */
+    private static Suit trumpSuit ;
     /** Player who started the RoundPile */
     private Player creator ;
     /** Number of face cards in the list */
@@ -68,9 +71,15 @@ public class RoundPile extends Pile
      */
     public void add( Card newCard,
                      Player distributer,
-                     Team distributerTeam,
+                     Team distributerTeam, 
                      int round )
         {
+        // If there is no Trump suit, make this card's suit be the trump suit
+        if ( trumpSuit == null )
+            {
+            trumpSuit = newCard.getSuit() ;
+            
+            }
 
         // Adds card to this pile and updates tally points and face counter
         add( newCard ) ;
@@ -230,11 +239,18 @@ public class RoundPile extends Pile
         return this.tallyPoints ;
 
         }   // end getTallyPoints()
+    
+    /** @return Gets the trump suit of all RoundPiles */
+    public static Suit getTrumpSuit()
+        {
+        return trumpSuit ;
 
+        }   // endgetTrumpSuit()
 
     /** Resets the trump suit of all RoundPiles */
     public static void resetTrumpSuit()
         {
+        trumpSuit = null ;
 
         }   // end resetTrumpSuit()
 
@@ -258,13 +274,23 @@ public class RoundPile extends Pile
         {
         // OPTIONAL for testing and debugging
         RoundPile j = new RoundPile() ;
+<<<<<<< HEAD
         //j.add( new Card(Suit.HEARTS, Rank.ACE), new Player(new Hand()), new Team(new Player(new Hand()), new Player(new Hand())) ) ;
         //System.out.println( j.trumpSuit ) ;
+=======
+        j.add( new Card(Suit.HEARTS, Rank.ACE), new Player(new Hand()), new Team(new Player(new Hand()), new Player(new Hand())) ) ;
+        System.out.println( RoundPile.trumpSuit ) ;
+>>>>>>> branch 'main' of git@github.com:christien1atwit/listApp-Pitch.git
         System.out.println( j.getHighestTrumpCard() ) ;
         
         RoundPile k = new RoundPile() ;
+<<<<<<< HEAD
         //k.add( new Card(Suit.DIAMONDS, Rank.JACK), new Player(new Hand()), new Team(new Player(new Hand()), new Player(new Hand())) ) ;
         //System.out.println( k.trumpSuit ) ;
+=======
+        k.add( new Card(Suit.DIAMONDS, Rank.JACK), new Player(new Hand()), new Team(new Player(new Hand()), new Player(new Hand())) ) ;
+        System.out.println( RoundPile.trumpSuit ) ;
+>>>>>>> branch 'main' of git@github.com:christien1atwit/listApp-Pitch.git
         System.out.println( k.getHighestTrumpCard() ) ;
         
         }   // end main()
